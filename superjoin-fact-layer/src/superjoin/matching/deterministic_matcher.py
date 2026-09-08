@@ -31,6 +31,8 @@ def compare_scopes(scope_a: Optional[str], scope_b: Optional[str]) -> Tuple[str,
 
     if not norm_a and not norm_b:
         return "same", "Both facts have default/unspecified scope."
+    if norm_a == "unknown" or norm_b == "unknown":
+        return "unknown", "Reporting scope is unknown or ambiguous on one or both facts."
     if norm_a == norm_b:
         return "same", f"Identical reporting scope: '{scope_a}'"
     if not norm_a or not norm_b:

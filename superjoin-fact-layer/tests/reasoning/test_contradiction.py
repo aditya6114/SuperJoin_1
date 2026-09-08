@@ -162,12 +162,14 @@ def test_no_contradiction_when_time_differs(evaluator):
     assert evaluator.evaluate(ctx) is None
 
 
-def test_no_contradiction_when_time_is_unknown(evaluator):
-    """₹500 Cr vs ₹600 Cr with time=unknown -> Refuse false contradiction (must be None)."""
+def test_contradiction_unknown_time_does_not_block(evaluator):
+    """Breakpoint 4 Test 1 — Unknown time must not automatically block contradiction.
+    Company X revenue 500 vs 600, time=unknown, scope=same -> CONTRADICTS.
+    """
     fact_a = Fact(
         fact_id="f1",
         fact_type="numerical",
-        subject=FactSubject(name="Delhivery", type="company"),
+        subject=FactSubject(name="Company X", type="company"),
         predicate="revenue",
         object=FactObject(value_type="currency", value=500, currency="₹", scale="crore"),
         time=TemporalContext(time_type="unknown"),
@@ -177,7 +179,7 @@ def test_no_contradiction_when_time_is_unknown(evaluator):
     fact_b = Fact(
         fact_id="f2",
         fact_type="numerical",
-        subject=FactSubject(name="Delhivery", type="company"),
+        subject=FactSubject(name="Company X", type="company"),
         predicate="revenue",
         object=FactObject(value_type="currency", value=600, currency="₹", scale="crore"),
         time=TemporalContext(time_type="unknown"),
@@ -207,4 +209,164 @@ def test_no_contradiction_when_time_is_unknown(evaluator):
         fact_b=fact_b
     )
     ctx = ComparisonContext(match)
+    result = evaluator.evaluate(ctx)
+    assert result is not None
+    conf, reason, explanation = result
+    assert conf >= 0.70
+    assert "materially different values" in reason
+    assert "unspecified" in explanation
+
+
+def test_number_vs_percentage_not_contradiction(evaluator):
+    """Breakpoint 4 Test 3 — Number vs percentage is not blindly a contradiction.
+    value A = 49114.06 vs value B = 13.5% -> dimensional incompatibility, returns None.
+    """
+    fact_a = Fact(
+        fact_id="num-1",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="total_income",
+        object=FactObject(value_type="currency", value=49114.06, currency="₹"),
+        time=TemporalContext(time_type="unknown"),
+        confidence=0.95,
+        evidence_ids=["e1"]
+    )
+    fact_b = Fact(
+        fact_id="pct-1",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="total_income",
+        object=FactObject(value_type="percentage", value=13.5, unit="%"),
+        time=TemporalContext(time_type="unknown"),
+        confidence=0.95,
+        evidence_ids=["e2"]
+    )
+    signals = MatchSignals(
+        subject="exact",
+        predicate="exact",
+        fact_type="compatible",
+        value="different",
+        unit="different",
+        time="unknown",
+        scope="same",
+        qualifiers="exact"
+    )
+    match = MatchResult(
+        fact_a_id="num-1",
+        fact_b_id="pct-1",
+        document_a_id="doc1",
+        document_b_id="doc2",
+        classification=MatchClassification.SAME_CLAIM,
+        confidence=0.85,
+        signals=signals,
+        reasons=["Different values"],
+        fact_a=fact_a,
+        fact_b=fact_b
+    )
+    ctx = ComparisonContext(match)
+    # ContradictionEvaluator MUST refuse contradiction due to dimensional mismatch
     assert evaluator.evaluate(ctx) is None
+
+
+def test_same_document_contradiction(evaluator):
+    """Breakpoint 12 — Same-document contradiction produces CONTRADICTS with source_independence = same_document."""
+    fact_a = Fact(
+        fact_id="doc1:f1",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=500, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="fiscal_year", value="FY2024"),
+        confidence=0.95,
+        evidence_ids=["doc1:ev1"]
+    )
+    fact_b = Fact(
+        fact_id="doc1:f2",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=600, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="fiscal_year", value="FY2024"),
+        confidence=0.95,
+        evidence_ids=["doc1:ev2"]
+    )
+    signals = MatchSignals(
+        subject="exact",
+        predicate="exact",
+        fact_type="compatible",
+        value="different",
+        unit="same",
+        time="same",
+        scope="same",
+        qualifiers="exact"
+    )
+    match = MatchResult(
+        fact_a_id="doc1:f1",
+        fact_b_id="doc1:f2",
+        document_a_id="doc1",
+        document_b_id="doc1",
+        classification=MatchClassification.SAME_CLAIM,
+        confidence=0.90,
+        signals=signals,
+        reasons=["Different values"],
+        fact_a=fact_a,
+        fact_b=fact_b
+    )
+    ctx = ComparisonContext(match)
+    assert ctx.source_independence == "same_document"
+    res = evaluator.evaluate(ctx)
+    assert res is not None
+    conf, reason, explanation = res
+    assert "Internal document contradiction" in explanation
+
+
+def test_cross_document_contradiction(evaluator):
+    """Breakpoint 12 — Cross-document contradiction produces CONTRADICTS with source_independence = cross_document."""
+    fact_a = Fact(
+        fact_id="doc1:f1",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=500, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="fiscal_year", value="FY2024"),
+        confidence=0.95,
+        evidence_ids=["doc1:ev1"]
+    )
+    fact_b = Fact(
+        fact_id="doc2:f2",
+        fact_type="numerical",
+        subject=FactSubject(name="Delhivery", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=600, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="fiscal_year", value="FY2024"),
+        confidence=0.95,
+        evidence_ids=["doc2:ev2"]
+    )
+    signals = MatchSignals(
+        subject="exact",
+        predicate="exact",
+        fact_type="compatible",
+        value="different",
+        unit="same",
+        time="same",
+        scope="same",
+        qualifiers="exact"
+    )
+    match = MatchResult(
+        fact_a_id="doc1:f1",
+        fact_b_id="doc2:f2",
+        document_a_id="doc1",
+        document_b_id="doc2",
+        classification=MatchClassification.SAME_CLAIM,
+        confidence=0.90,
+        signals=signals,
+        reasons=["Different values"],
+        fact_a=fact_a,
+        fact_b=fact_b
+    )
+    ctx = ComparisonContext(match)
+    assert ctx.source_independence == "cross_document"
+    res = evaluator.evaluate(ctx)
+    assert res is not None
+    conf, reason, explanation = res
+    assert "Contradiction across sources" in explanation

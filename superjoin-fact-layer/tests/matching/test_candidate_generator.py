@@ -120,3 +120,15 @@ def test_incompatible_fact_types_not_paired():
 
     # Date event vs currency numerical should not be paired
     assert len(candidates) == 0
+
+
+def test_no_self_pairs_generated():
+    """Breakpoint 11 Test 4 — Self-pairs (fact paired with itself) are never generated."""
+    index = FactIndex()
+    f1 = make_fact("F1", "Delhivery", "revenue", 500)
+    index.add_fact(f1, "doc1")
+
+    gen = CandidateGenerator(cross_document_only=False)
+    candidates = gen.generate_candidates(index)
+
+    assert len(candidates) == 0

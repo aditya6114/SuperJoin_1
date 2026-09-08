@@ -265,6 +265,7 @@ def test_assignment_case_d_unresolved_missing_context(matcher, service):
         predicate="revenue",
         object=FactObject(value_type="currency", value=500, currency="₹", scale="crore"),
         time=TemporalContext(time_type="unknown"),
+        scope="unknown",
         confidence=0.95,
         evidence_ids=["ev-a"]
     )
@@ -275,6 +276,7 @@ def test_assignment_case_d_unresolved_missing_context(matcher, service):
         predicate="revenue",
         object=FactObject(value_type="currency", value=600, currency="₹", scale="crore"),
         time=TemporalContext(time_type="unknown"),
+        scope="unknown",
         confidence=0.95,
         evidence_ids=["ev-b"]
     )
@@ -284,6 +286,40 @@ def test_assignment_case_d_unresolved_missing_context(matcher, service):
 
     assert rel.relationship == RelationshipType.UNRESOLVED
     assert "values differ, but available evidence does not establish" in rel.reason
+
+
+def test_assignment_case_b_contradiction_unknown_time(matcher, service):
+    """Breakpoint 1 — Unknown time on strong same claim produces CONTRADICTS with reduced confidence.
+    Revenue = ₹500 Cr vs ₹600 Cr with time=unknown and scope=same.
+    """
+    fact_a = Fact(
+        fact_id="unk-b-1",
+        fact_type="numerical",
+        subject=FactSubject(name="Company X", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=500, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="unknown"),
+        confidence=0.95,
+        evidence_ids=["ev-a"]
+    )
+    fact_b = Fact(
+        fact_id="unk-b-2",
+        fact_type="numerical",
+        subject=FactSubject(name="Company X", type="company"),
+        predicate="revenue",
+        object=FactObject(value_type="currency", value=600, currency="₹", scale="crore"),
+        time=TemporalContext(time_type="unknown"),
+        confidence=0.95,
+        evidence_ids=["ev-b"]
+    )
+    cand = CandidatePair(fact_a_id="unk-b-1", fact_b_id="unk-b-2", document_a_id="doc1", document_b_id="doc2")
+    match = matcher.compare(fact_a, fact_b, candidate=cand)
+    rel = service.reason_match(match)
+
+    assert rel.relationship == RelationshipType.CONTRADICTS
+    assert rel.confidence >= 0.70
+    assert "materially different values" in rel.reason
+    assert "unspecified" in rel.explanation
 
 
 def test_unrelated_different_entities(matcher, service):

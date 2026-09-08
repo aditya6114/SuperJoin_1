@@ -3,7 +3,7 @@ from .compatibility import ComparisonContext
 
 
 class ContextualReconciliationEvaluator:
-    """Evaluates whether differing facts are reconciled by context (time, scope, status, qualifiers)."""
+    """Evaluates whether differing facts are reconciled by context (time, scope, status, qualifiers, metric dimensions)."""
 
     def evaluate(self, ctx: ComparisonContext) -> Optional[Tuple[float, str, str]]:
         """Evaluate if the pair represents CONTEXTUALLY_RECONCILED.
@@ -18,12 +18,6 @@ class ContextualReconciliationEvaluator:
         if not ctx.is_compatible_fact_type:
             return None
 
-        # Do NOT reconcile if values are already equivalent/equal (that is CORROBORATES)
-        # However, if values are equal in different periods, it could still be noted,
-        # but typically different periods are considered contextual reconciliation when compared as claims.
-        # Let's check: if time is different, even if values happen to be equal (e.g. ₹500 Cr in 2023 and ₹500 Cr in 2024),
-        # they are claims about different periods!
-        
         base_conf = ctx.match.confidence
         if ctx.fact_a and ctx.fact_b:
             base_conf = min(ctx.fact_a.confidence, ctx.fact_b.confidence)
@@ -87,5 +81,21 @@ class ContextualReconciliationEvaluator:
                 f"The figures for {subject}'s {predicate} ({val_a} vs {val_b}) reflect differing qualifiers or accounting definitions."
             )
             return round(confidence, 4), reason, explanation
+
+        # Case 6: Metric Dimension Divergence (Number vs Percentage) (Breakpoint 2)
+        # E.g. total_income = 49114.06 (rupees) vs 13.5% (percentage growth / margin rate)
+        if ctx.fact_a and ctx.fact_b and ctx.fact_a.object and ctx.fact_b.object:
+            obj_a = ctx.fact_a.object
+            obj_b = ctx.fact_b.object
+            is_pct_a = obj_a.value_type == "percentage" or bool(obj_a.unit and "%" in obj_a.unit)
+            is_pct_b = obj_b.value_type == "percentage" or bool(obj_b.unit and "%" in obj_b.unit)
+            if is_pct_a != is_pct_b:
+                confidence = min(0.86, max(0.5, base_conf * 0.82))
+                reason = "The figures represent different metric dimensions (absolute figure vs percentage rate)."
+                explanation = (
+                    f"The reported figures for {subject}'s {predicate} differ because one fact reports an absolute amount "
+                    f"('{val_a}') while the other reports a percentage ('{val_b}'). These reflect differing metric definitions rather than a direct contradiction."
+                )
+                return round(confidence, 4), reason, explanation
 
         return None

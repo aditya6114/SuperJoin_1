@@ -109,35 +109,36 @@ class RelationshipReasoningService:
             )
 
         else:
-            # 3. Check Corroboration
+            # 3. Check Corroboration (value = equivalent or compatible)
             corroboration = self.corroboration_evaluator.evaluate(ctx)
             if corroboration:
                 confidence, reason, explanation = corroboration
                 relationship = RelationshipType.CORROBORATES
 
             else:
-                # 4. Check Contradiction
-                contradiction = self.contradiction_evaluator.evaluate(ctx)
-                if contradiction:
-                    confidence, reason, explanation = contradiction
-                    relationship = RelationshipType.CONTRADICTS
+                # 4. Check Contextual Reconciliation (explicit time, scope, status, qualifiers, metric divergence)
+                reconciliation = self.reconciliation_evaluator.evaluate(ctx)
+                if reconciliation:
+                    confidence, reason, explanation = reconciliation
+                    relationship = RelationshipType.CONTEXTUALLY_RECONCILED
 
                 else:
-                    # 5. Check Contextual Reconciliation
-                    reconciliation = self.reconciliation_evaluator.evaluate(ctx)
-                    if reconciliation:
-                        confidence, reason, explanation = reconciliation
-                        relationship = RelationshipType.CONTEXTUALLY_RECONCILED
+                    # 5. Check Contradiction (same period or unknown period with strong same-claim identity)
+                    contradiction = self.contradiction_evaluator.evaluate(ctx)
+                    if contradiction:
+                        confidence, reason, explanation = contradiction
+                        relationship = RelationshipType.CONTRADICTS
 
-                    # 6. Differing values with missing / unknown context (time or scope unknown)
-                    elif ctx.is_value_different and (ctx.is_unknown_time or ctx.is_unknown_scope):
+                    # 6. Differing values with inadequate context / missing evidence (Breakpoint 3)
+                    elif ctx.is_value_different:
                         relationship = RelationshipType.UNRESOLVED
                         confidence = 0.55
-                        reason = "The values differ, but available evidence does not establish reporting period and scope."
+                        reason = "The values differ, but available evidence does not establish sufficient reporting context."
                         explanation = (
                             f"Fact A reports '{ctx.get_val_a_str()}' ({ctx.get_time_a_str()}, {ctx.get_scope_a_str()}) "
                             f"while Fact B reports '{ctx.get_val_b_str()}' ({ctx.get_time_b_str()}, {ctx.get_scope_b_str()}). "
-                            f"Because temporal or scope context is unspecified, the system refuses to force a contradiction or reconciliation."
+                            f"Because contextual scope or temporal definitions are insufficient to establish direct conflict, "
+                            f"the system treats this as unresolved."
                         )
 
                     # 7. Fallback / Optional LLM reasoning
