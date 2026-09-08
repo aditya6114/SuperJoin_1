@@ -136,7 +136,7 @@ class FactExtractionService:
                     det_facts, uncertainties = extract_text_facts_deterministic(context_dict)
                     if det_facts:
                         cand_facts = det_facts
-                    elif active_llm is not None:
+                    elif active_llm is not None and (uncertainties or cand.type in ("caption", "footnote")):
                         cand_facts = extract_text_facts(context_str, active_llm)
                     elif uncertainties:
                         for u in uncertainties:
