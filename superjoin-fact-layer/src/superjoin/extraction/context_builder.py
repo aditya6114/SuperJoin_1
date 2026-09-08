@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from superjoin.ingestion.models import (
     CanonicalDocument,
     CanonicalElement,
@@ -18,28 +18,30 @@ def find_section_hierarchy(document: CanonicalDocument, target_order: int) -> Li
                 headers.append(el.content.strip())
     return headers[-3:]
 
-def build_context(document: CanonicalDocument, candidate: CanonicalElement) -> str:
-    """Builds a localized, targeted context string for the LLM."""
-    
-    # Base context
+def build_context_dict(document: CanonicalDocument, candidate: CanonicalElement) -> Dict[str, Any]:
+    """Constructs a targeted dictionary of context for an extraction candidate."""
+    doc_meta = getattr(document, "metadata", None)
+    doc_id = getattr(doc_meta, "document_id", getattr(document, "document_id", "doc_unknown"))
+    doc_title = getattr(doc_meta, "title", None) or getattr(document, "source_filename", "")
+
     context_data: Dict[str, Any] = {
-        "document_id": document.metadata.document_id,
-        "document_title": document.metadata.title,
+        "document_id": doc_id,
+        "document_title": doc_title,
         "element_id": candidate.element_id,
         "element_type": candidate.type,
-        "evidence_ids": candidate.evidence_ids,
-        "pdf_page_number": None,
+        "evidence_ids": list(candidate.evidence_ids) if candidate.evidence_ids else [candidate.element_id],
+        "pdf_page_number": 1,
         "printed_page_number": None,
     }
-    
+
     # Find page number
     for page in document.pages:
         if any(e.element_id == candidate.element_id for e in page.elements):
             context_data["pdf_page_number"] = page.pdf_page_number
             context_data["printed_page_number"] = page.printed_page_number
             break
-            
-    # Add section hierarchy
+
+    # Section hierarchy
     hierarchy = find_section_hierarchy(document, candidate.canonical_order)
     if hierarchy:
         context_data["section_hierarchy"] = hierarchy
@@ -55,10 +57,9 @@ def build_context(document: CanonicalDocument, candidate: CanonicalElement) -> s
         context_data["figure_caption"] = getattr(candidate, "caption", None)
         context_data["figure_text_fragments"] = getattr(candidate, "text_fragments", [])
     else:
-        # Text element: paragraph, list_item, section_header, caption, footnote
-        context_data["content"] = candidate.content
-        
-        # Add adjacent surrounding elements for context resolution (e.g. subject/time reference)
+        context_data["content"] = candidate.content or ""
+
+        # Surrounding elements for pronoun/context resolution
         surrounding = []
         for page in document.pages:
             for el in page.elements:
@@ -72,5 +73,10 @@ def build_context(document: CanonicalDocument, candidate: CanonicalElement) -> s
                         })
         if surrounding:
             context_data["surrounding_elements"] = surrounding
-            
-    return json.dumps(context_data, indent=2)
+
+    return context_data
+
+def build_context(document: CanonicalDocument, candidate: CanonicalElement) -> str:
+    """Builds a localized, targeted context JSON string for extractors and LLM."""
+    ctx_dict = build_context_dict(document, candidate)
+    return json.dumps(ctx_dict, indent=2)

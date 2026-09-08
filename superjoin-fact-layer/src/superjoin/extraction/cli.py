@@ -6,7 +6,7 @@ from typing import Optional
 
 from superjoin.ingestion.models import CanonicalDocument
 from .service import FactExtractionService
-from .llm.provider import DefaultLLMProvider
+from .llm.client import OpenAILLMClient, MockLLMClient
 
 def inspect_facts(result):
     print(f"\nDocument ID: {result.document_id}")
@@ -59,6 +59,7 @@ def main():
     parser.add_argument("--output", type=str, default="data/facts", help="Output directory for extracted facts")
     parser.add_argument("--inspect", action="store_true", help="Print detailed factual breakdown")
     parser.add_argument("--model", type=str, default="gemini-1.5-flash", help="LLM model name")
+    parser.add_argument("--no-llm", action="store_true", help="Disable LLM and use deterministic + semantic extraction only")
 
     args = parser.parse_args()
 
@@ -68,8 +69,11 @@ def main():
     input_path = Path(args.input)
     output_dir = Path(args.output)
     
-    llm_provider = DefaultLLMProvider(model_name=args.model)
-    service = FactExtractionService(llm_client=llm_provider, output_dir=str(output_dir))
+    if args.no_llm:
+        service = FactExtractionService(llm_client=None, llm_enabled=False, output_dir=str(output_dir))
+    else:
+        llm_client = OpenAILLMClient(model_name=args.model)
+        service = FactExtractionService(llm_client=llm_client, llm_enabled=True, output_dir=str(output_dir))
 
     if not input_path.exists():
         print(f"Error: Input path does not exist: {input_path}")

@@ -17,7 +17,7 @@ BOILERPLATE_PATTERNS = [
 ]
 
 def is_table_element(element: CanonicalElement) -> bool:
-    """Checks if an element represents a table, inspecting element.type and table properties."""
+    """Checks if an element represents a table."""
     return element.type == "table"
 
 def is_figure_element(element: CanonicalElement) -> bool:
@@ -42,9 +42,9 @@ def is_noise_or_boilerplate(text: str) -> bool:
     return False
 
 def contains_numeric_signal(text: str) -> bool:
-    """Check for numbers, currencies, percentages, scales."""
+    """Check for numbers, currencies, percentages, scales, and physical units."""
     pattern = re.compile(
-        r'(\$|₹|€|£|INR|USD)?\s*\d+([.,]\d+)?\s*(%|percent|million|billion|crore|lakh|thousand|centres|centers|sq\s*ft|square\s*feet|mt|km)?',
+        r'(\$|₹|€|£|INR|USD)?\s*\d+([.,]\d+)?\s*(%|percent|million|billion|crore|lakh|thousand|centres|centers|sq\s*ft|square\s*feet|tonnes|employees|guards|mt|km)?',
         re.IGNORECASE
     )
     return bool(pattern.search(text))
@@ -66,7 +66,9 @@ def contains_fact_predicate(text: str) -> bool:
         "located", "facility", "facilities", "fulfilment", "fulfillment",
         "ebitda", "ebit", "income", "expense", "expenditure", "market share",
         "volume", "sq ft", "square feet", "certified", "certification",
-        "contract", "partnered", "founded", "headquartered"
+        "contract", "partnered", "founded", "headquartered", "reported",
+        "generated", "launched", "increased", "decreased", "grew", "declined",
+        "provides", "serves"
     ]
     text_lower = text.lower()
     return any(kw in text_lower for kw in keywords)
@@ -95,10 +97,8 @@ def is_relevant_table(table: CanonicalTable) -> bool:
     rows = getattr(table, "rows", None)
     if not rows:
         return False
-    # Avoid tables that are just single cells used for layout
     if len(rows) == 1 and len(rows[0]) <= 1:
         return False
-    # Check if there is any text in the table
     has_any_content = any(any(str(cell).strip() for cell in row) for row in rows)
     return has_any_content
 

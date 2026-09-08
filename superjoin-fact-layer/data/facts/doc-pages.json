@@ -1,0 +1,105 @@
+{
+  "document_id": "doc-pages",
+  "facts": [
+    {
+      "fact_id": "667dd473-c086-4a73-8e05-5622b4789ec1",
+      "fact_type": "numerical",
+      "subject": {
+        "name": "Company",
+        "type": "company"
+      },
+      "predicate": "revenue",
+      "object": {
+        "value_type": "currency",
+        "value": 50,
+        "unit": null,
+        "currency": "₹",
+        "scale": "crore",
+        "qualifier": null
+      },
+      "time": {
+        "time_type": "calendar_year",
+        "value": "2022",
+        "start_date": null,
+        "end_date": null
+      },
+      "scope": null,
+      "qualifiers": [],
+      "confidence": 0.92,
+      "evidence_ids": [
+        "el-1"
+      ]
+    },
+    {
+      "fact_id": "657f217c-82ee-49d4-9102-7fdbd01c7907",
+      "fact_type": "numerical",
+      "subject": {
+        "name": "Company",
+        "type": "company"
+      },
+      "predicate": "revenue",
+      "object": {
+        "value_type": "number",
+        "value": 202,
+        "unit": null,
+        "currency": null,
+        "scale": null,
+        "qualifier": null
+      },
+      "time": {
+        "time_type": "calendar_year",
+        "value": "2022",
+        "start_date": null,
+        "end_date": null
+      },
+      "scope": null,
+      "qualifiers": [],
+      "confidence": 0.92,
+      "evidence_ids": [
+        "el-1"
+      ]
+    },
+    {
+      "fact_id": "82d9577a-54b2-4658-b793-b957c82c1be9",
+      "fact_type": "numerical",
+      "subject": {
+        "name": "Company",
+        "type": "company"
+      },
+      "predicate": "revenue",
+      "object": {
+        "value_type": "number",
+        "value": 2,
+        "unit": null,
+        "currency": null,
+        "scale": null,
+        "qualifier": null
+      },
+      "time": {
+        "time_type": "calendar_year",
+        "value": "2022",
+        "start_date": null,
+        "end_date": null
+      },
+      "scope": null,
+      "qualifiers": [],
+      "confidence": 0.92,
+      "evidence_ids": [
+        "el-1"
+      ]
+    }
+  ],
+  "uncertain_candidates": [],
+  "failed_candidates": [],
+  "warnings": [],
+  "statistics": {
+    "candidate_count": 1,
+    "text_candidate_count": 1,
+    "table_candidate_count": 0,
+    "figure_candidate_count": 0,
+    "facts_extracted": 3,
+    "facts_rejected": 0,
+    "facts_uncertain": 0,
+    "validation_failures": 0
+  }
+}

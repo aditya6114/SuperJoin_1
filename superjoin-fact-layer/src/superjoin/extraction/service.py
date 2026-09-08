@@ -1,12 +1,7 @@
-import os
 import json
 from pathlib import Path
 from typing import Optional, List, Dict, Any
-from superjoin.ingestion.models import (
-    CanonicalDocument, 
-    CanonicalTable, 
-    CanonicalFigure
-)
+from superjoin.ingestion.models import CanonicalDocument
 from .models import (
     Fact,
     FactExtractionResult,
@@ -14,26 +9,28 @@ from .models import (
     ExtractionStatistics
 )
 from .candidate_selector import select_candidates
-from .context_builder import build_context
-from .extractors.text_extractor import extract_text_facts
-from .extractors.table_extractor import extract_table_facts
-from .extractors.figure_extractor import extract_figure_facts
+from .context_builder import build_context, build_context_dict
+from .extractors.text_extractor import extract_text_facts, extract_text_facts_deterministic
+from .extractors.table_extractor import extract_table_facts, extract_table_facts_deterministic
+from .extractors.figure_extractor import extract_figure_facts, extract_figure_facts_deterministic
 from .validators import validate_facts
 from .deduplicator import deduplicate_facts
 from .llm.client import LLMClient
-from .llm.provider import DefaultLLMProvider
 
 class FactExtractionService:
     """
-    Main entry point for extracting atomic, evidence-grounded facts from CanonicalDocuments.
+    Main orchestration service for extracting atomic, evidence-grounded facts
+    from CanonicalDocuments using a hybrid extraction architecture.
     """
-    
+
     def __init__(
-        self, 
+        self,
         llm_client: Optional[LLMClient] = None,
+        llm_enabled: bool = True,
         output_dir: Optional[str] = "data/facts"
     ):
-        self.llm_client = llm_client or DefaultLLMProvider()
+        self.llm_client = llm_client
+        self.llm_enabled = llm_enabled and (llm_client is not None)
         self.output_dir = Path(output_dir) if output_dir else None
         if self.output_dir:
             self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -55,15 +52,16 @@ class FactExtractionService:
 
     def extract(self, document: CanonicalDocument) -> FactExtractionResult:
         """
-        Executes the fact extraction pipeline:
-        1. Candidate selection
-        2. Context building
-        3. Extractor routing (Text / Table / Figure)
-        4. Structured LLM extraction
-        5. Schema & evidence validation
-        6. Local document deduplication
-        7. Persistence & metrics computation
+        Executes the hybrid fact extraction pipeline:
+        1. Select candidates via deterministic signals
+        2. Build localized context
+        3. Run deterministic extraction (Table / Text / Figure)
+        4. LLM enhancement (only if ambiguous/complex and LLM is enabled)
+        5. Validate schema and evidence against CanonicalDocument
+        6. Deduplicate facts conservatively
+        7. Compute statistics and persist
         """
+        doc_id = document.metadata.document_id if document.metadata else document.document_id
         stats = ExtractionStatistics()
         failures: List[ExtractionFailure] = []
         warnings: List[str] = []
@@ -74,10 +72,11 @@ class FactExtractionService:
         candidates = select_candidates(document)
         stats.candidate_count = len(candidates)
 
+        active_llm = self.llm_client if self.llm_enabled else None
+
         for cand in candidates:
             page_num = self._find_page_number_for_element(document, cand.element_id)
-            
-            # Count candidate by type
+
             if cand.type == "table":
                 stats.table_candidate_count += 1
             elif cand.type in ("figure", "image"):
@@ -87,10 +86,11 @@ class FactExtractionService:
 
             # 2. Context Building
             try:
-                context = build_context(document, cand)
+                context_str = build_context(document, cand)
+                context_dict = build_context_dict(document, cand)
             except Exception as e:
                 failures.append(ExtractionFailure(
-                    document_id=document.metadata.document_id,
+                    document_id=doc_id,
                     page_number=page_num,
                     candidate_id=cand.element_id,
                     element_id=cand.element_id,
@@ -98,29 +98,68 @@ class FactExtractionService:
                 ))
                 continue
 
-            # 3 & 4. Route to Extractor & LLM Extraction
+            # 3 & 4. Hybrid Extraction (Deterministic first, LLM fallback if needed)
             try:
-                if cand.type == "table":
-                    cand_facts = extract_table_facts(context, self.llm_client)
-                elif cand.type in ("figure", "image"):
-                    cand_facts = extract_figure_facts(context, self.llm_client)
-                else:
-                    cand_facts = extract_text_facts(context, self.llm_client)
+                cand_facts: List[Fact] = []
+                is_ambiguous: bool = False
 
-                if not cand_facts:
-                    # Note potential uncertain candidate if no facts extracted
-                    uncertain_candidates.append({
-                        "element_id": cand.element_id,
-                        "type": cand.type,
-                        "page_number": page_num,
-                        "reason": "No high-confidence structured claims found."
-                    })
+                if cand.type == "table":
+                    det_facts, is_ambiguous = extract_table_facts_deterministic(context_dict)
+                    if det_facts and not is_ambiguous:
+                        cand_facts = det_facts
+                    elif active_llm is not None:
+                        cand_facts = extract_table_facts(context_str, active_llm)
+                    elif is_ambiguous:
+                        uncertain_candidates.append({
+                            "element_id": cand.element_id,
+                            "type": "table",
+                            "page_number": page_num,
+                            "reason": "Ambiguous table column or header structure."
+                        })
+
+                elif cand.type in ("figure", "image"):
+                    det_facts, is_ambiguous = extract_figure_facts_deterministic(context_dict)
+                    if det_facts and not is_ambiguous:
+                        cand_facts = det_facts
+                    elif active_llm is not None:
+                        cand_facts = extract_figure_facts(context_str, active_llm)
+                    else:
+                        uncertain_candidates.append({
+                            "element_id": cand.element_id,
+                            "type": cand.type,
+                            "page_number": page_num,
+                            "reason": "Figure lacks clear deterministic semantic grounding."
+                        })
+
                 else:
+                    # Text candidate
+                    det_facts, uncertainties = extract_text_facts_deterministic(context_dict)
+                    if det_facts:
+                        cand_facts = det_facts
+                    elif active_llm is not None:
+                        cand_facts = extract_text_facts(context_str, active_llm)
+                    elif uncertainties:
+                        for u in uncertainties:
+                            uncertain_candidates.append({
+                                "element_id": cand.element_id,
+                                "type": cand.type,
+                                "page_number": page_num,
+                                "reason": u
+                            })
+                    else:
+                        uncertain_candidates.append({
+                            "element_id": cand.element_id,
+                            "type": cand.type,
+                            "page_number": page_num,
+                            "reason": "No high-confidence structured claims found."
+                        })
+
+                if cand_facts:
                     raw_facts.extend(cand_facts)
 
             except Exception as e:
                 failures.append(ExtractionFailure(
-                    document_id=document.metadata.document_id,
+                    document_id=doc_id,
                     page_number=page_num,
                     candidate_id=cand.element_id,
                     element_id=cand.element_id,
@@ -139,7 +178,7 @@ class FactExtractionService:
             first_eid = f.evidence_ids[0] if f.evidence_ids else "unknown"
             p_num = self._find_page_number_for_element(document, first_eid)
             failures.append(ExtractionFailure(
-                document_id=document.metadata.document_id,
+                document_id=doc_id,
                 page_number=p_num,
                 candidate_id=first_eid,
                 element_id=first_eid,
@@ -151,7 +190,7 @@ class FactExtractionService:
         deduplicated = deduplicate_facts(valid_facts)
 
         result = FactExtractionResult(
-            document_id=document.metadata.document_id,
+            document_id=doc_id,
             facts=deduplicated,
             uncertain_candidates=uncertain_candidates,
             failed_candidates=failures,

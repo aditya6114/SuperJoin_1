@@ -1,6 +1,6 @@
 import json
 from superjoin.extraction.models import Fact, FactList, Subject, FactValue, TimeContext
-from superjoin.extraction.llm.provider import MockLLMProvider
+from superjoin.extraction.llm.client import MockLLMClient as MockLLMProvider
 from superjoin.extraction.extractors.text_extractor import extract_text_facts
 
 def test_extract_atomic_facts_from_text():
@@ -11,7 +11,7 @@ def test_extract_atomic_facts_from_text():
         "content": "Delhivery operates 93 fulfilment centres covering 6.25 million square feet."
     })
 
-    # Mock LLM returns two atomic facts
+    # Expected two atomic facts according to Case 6
     fact_a = Fact(
         fact_type="numerical",
         subject=Subject(name="Delhivery", type="company"),
@@ -24,7 +24,7 @@ def test_extract_atomic_facts_from_text():
     fact_b = Fact(
         fact_type="numerical",
         subject=Subject(name="Delhivery", type="company"),
-        predicate="has_floor_area",
+        predicate="floor_area",
         object=FactValue(value_type="number", value=6.25, unit="million square feet", scale="million"),
         time=TimeContext(time_type="unknown"),
         confidence=0.92,
@@ -39,7 +39,7 @@ def test_extract_atomic_facts_from_text():
     assert len(extracted) == 2
     assert extracted[0].predicate == "operates"
     assert extracted[0].object.value == 93
-    assert extracted[1].predicate == "has_floor_area"
+    assert extracted[1].predicate == "floor_area"
     assert extracted[1].object.value == 6.25
     assert extracted[0].evidence_ids == ["elem-p1"]
     assert extracted[1].evidence_ids == ["elem-p1"]
@@ -48,9 +48,9 @@ def test_extract_text_attaches_fallback_evidence_if_missing():
     context = json.dumps({
         "element_id": "el-99",
         "evidence_ids": ["el-99"],
-        "content": "Revenue was ₹1,000 crore."
+        "content": "Some ambiguous statement requiring LLM fallback."
     })
-    # Fact returned without explicit evidence_ids
+    # Fact returned without explicit evidence_ids from LLM
     fact_without_ev = Fact(
         fact_type="numerical",
         subject=Subject(name="Delhivery", type="company"),
@@ -58,7 +58,7 @@ def test_extract_text_attaches_fallback_evidence_if_missing():
         object=FactValue(value_type="currency", value=1000, currency="₹", scale="crore"),
         time=TimeContext(time_type="unknown"),
         confidence=0.9,
-        evidence_ids=["temp"]  # will be replaced or tested
+        evidence_ids=["temp"]
     )
     fact_without_ev.evidence_ids = []
 
