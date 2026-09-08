@@ -2,7 +2,7 @@
   "document_id": "doc-disagree",
   "facts": [
     {
-      "fact_id": "379036c0-dc96-42b7-8339-94c1dfcbbbc8",
+      "fact_id": "2b98da58-d0c2-48f3-89f6-0d664d497f89",
       "fact_type": "numerical",
       "subject": {
         "name": "Company",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "fact_id": "00c9b9a0-3d65-47a3-a3d0-1dc7b752a418",
+      "fact_id": "96547439-ed8e-411c-a7c8-0605d4d51a80",
       "fact_type": "numerical",
       "subject": {
         "name": "Company",

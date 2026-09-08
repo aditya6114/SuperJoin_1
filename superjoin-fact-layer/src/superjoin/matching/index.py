@@ -13,6 +13,17 @@ def normalize_key(text: Optional[str]) -> str:
     return normalized.strip().lower()
 
 
+def resolve_subject(subject_name: Optional[str], document_id: Optional[str] = None) -> str:
+    """Safely resolve generic subjects if document origin provides unambiguous grounding."""
+    norm = normalize_key(subject_name)
+    if norm in {"company", "the company", "our company"} and document_id:
+        if "delhivery" in document_id.lower():
+            return "delhivery"
+    if norm in {"delhivery limited", "delhivery ltd"}:
+        return "delhivery"
+    return norm
+
+
 class IndexedFact:
     """Container associating an extracted Fact with its document origin and normalized keys."""
     __slots__ = ("fact", "document_id", "normalized_subject", "normalized_predicate")
@@ -20,7 +31,8 @@ class IndexedFact:
     def __init__(self, fact: Fact, document_id: str):
         self.fact = fact
         self.document_id = document_id
-        self.normalized_subject = normalize_key(fact.subject.name if fact.subject else "")
+        raw_subj = fact.subject.name if fact.subject else ""
+        self.normalized_subject = resolve_subject(raw_subj, document_id)
         self.normalized_predicate = normalize_key(fact.predicate)
 
 

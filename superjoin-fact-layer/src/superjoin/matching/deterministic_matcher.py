@@ -6,7 +6,7 @@ from .models import (
     MatchResult,
     MatchClassification
 )
-from .index import normalize_key
+from .index import normalize_key, resolve_subject
 from .candidate_generator import (
     GENERIC_UNCERTAIN_SUBJECTS,
     COMPATIBLE_PREDICATES,
@@ -85,27 +85,32 @@ class DeterministicMatcher:
         """Perform comprehensive deterministic comparison of two facts."""
         reasons: List[str] = []
 
-        # 1. Subject comparison
+        doc_a_id = candidate.document_a_id if candidate else None
+        doc_b_id = candidate.document_b_id if candidate else None
+
         subj_a = fact_a.subject.name if fact_a.subject else ""
         subj_b = fact_b.subject.name if fact_b.subject else ""
         norm_subj_a = normalize_key(subj_a)
         norm_subj_b = normalize_key(subj_b)
 
-        is_uncertain_a = not norm_subj_a or norm_subj_a in GENERIC_UNCERTAIN_SUBJECTS
-        is_uncertain_b = not norm_subj_b or norm_subj_b in GENERIC_UNCERTAIN_SUBJECTS
+        res_subj_a = resolve_subject(subj_a, doc_a_id)
+        res_subj_b = resolve_subject(subj_b, doc_b_id)
 
-        is_same_doc = bool(candidate and candidate.document_a_id and candidate.document_a_id == candidate.document_b_id)
+        is_uncertain_a = not res_subj_a or res_subj_a in GENERIC_UNCERTAIN_SUBJECTS
+        is_uncertain_b = not res_subj_b or res_subj_b in GENERIC_UNCERTAIN_SUBJECTS
+
+        is_same_doc = bool(doc_a_id and doc_a_id == doc_b_id)
 
         if norm_subj_a == norm_subj_b and is_same_doc:
             subj_signal = "exact"
             reasons.append(f"Same subject within document: '{subj_a}'")
+        elif res_subj_a == res_subj_b and not is_uncertain_a and not is_uncertain_b:
+            subj_signal = "exact"
+            reasons.append(f"Same subject: '{subj_a}' ({res_subj_a})")
         elif is_uncertain_a or is_uncertain_b:
             subj_signal = "unknown"
             reasons.append(f"Subject unresolved or pronoun: '{subj_a}' vs '{subj_b}'")
-        elif norm_subj_a == norm_subj_b:
-            subj_signal = "exact"
-            reasons.append(f"Same subject: '{subj_a}'")
-        elif norm_subj_a.replace(" limited", "").replace(" ltd", "").strip() == norm_subj_b.replace(" limited", "").replace(" ltd", "").strip():
+        elif res_subj_a.replace(" limited", "").replace(" ltd", "").strip() == res_subj_b.replace(" limited", "").replace(" ltd", "").strip():
             subj_signal = "alias"
             reasons.append(f"Subject canonical alias: '{subj_a}' == '{subj_b}'")
         else:

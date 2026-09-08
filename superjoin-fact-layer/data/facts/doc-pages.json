@@ -2,7 +2,7 @@
   "document_id": "doc-pages",
   "facts": [
     {
-      "fact_id": "ef4e217d-9e7c-4fcb-ba39-987520a22e31",
+      "fact_id": "3ad24c20-59ad-48c2-a25e-810912b4dfb1",
       "fact_type": "numerical",
       "subject": {
         "name": "Company",
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "fact_id": "9128d715-d445-42c2-bb0d-56312546943c",
+      "fact_id": "bc6ba6d7-e869-44a3-bcf4-146483a6258d",
       "fact_type": "numerical",
       "subject": {
         "name": "Company",
@@ -60,7 +60,7 @@
       ]
     },
     {
-      "fact_id": "4edb02cb-d8d7-4689-bbcb-49143a49e2a8",
+      "fact_id": "f0704284-a780-46e9-af81-b1380d9733b7",
       "fact_type": "numerical",
       "subject": {
         "name": "Company",
