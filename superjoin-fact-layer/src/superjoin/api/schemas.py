@@ -1,4 +1,4 @@
-from typing import Optional, List, Any
+from typing import Optional, List, Any, Union
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -41,8 +41,9 @@ class RelationshipModel(BaseModel):
     """Clean representation of a relationship or conflict between two facts."""
     model_config = ConfigDict(populate_by_name=True)
 
-    fact_a: str = Field(..., description="Fact A identifier.", examples=["fact_001"])
-    fact_b: str = Field(..., description="Fact B identifier.", examples=["fact_002"])
+    relationship_id: Optional[str] = Field(None, description="Unique relationship identifier.", examples=["rel_001"])
+    fact_a: Union[FactModel, str] = Field(..., description="Fact A actual details or identifier.")
+    fact_b: Union[FactModel, str] = Field(..., description="Fact B actual details or identifier.")
     type: str = Field(
         ...,
         description="Relationship type: CORROBORATES | CONTRADICTS | CONTEXTUALLY_RECONCILED | UNRELATED | UNRESOLVED",
@@ -50,6 +51,23 @@ class RelationshipModel(BaseModel):
     )
     confidence: float = Field(..., description="Confidence score between 0.0 and 1.0.", examples=[0.91])
     reason: str = Field(..., description="Deterministic reason.", examples=["Same subject, metric, period and scope but materially different values."])
+    explanation: Optional[str] = Field(None, description="Detailed explanation of the relationship.")
+
+
+class FactsListResponse(BaseModel):
+    """Paginated list of facts."""
+    total: int = Field(..., description="Total count of matching facts.", examples=[822])
+    limit: int = Field(default=100, description="Page size limit.", examples=[100])
+    offset: int = Field(default=0, description="Page offset.", examples=[0])
+    facts: List[FactModel] = Field(default_factory=list)
+
+
+class RelationshipsListResponse(BaseModel):
+    """Paginated list of relationships with actual embedded facts."""
+    total: int = Field(..., description="Total count of matching relationships.", examples=[45])
+    limit: int = Field(default=100, description="Page size limit.", examples=[100])
+    offset: int = Field(default=0, description="Page offset.", examples=[0])
+    relationships: List[RelationshipModel] = Field(default_factory=list)
 
 
 class DocumentResultsResponse(BaseModel):
@@ -64,6 +82,7 @@ class CorpusResultsResponse(BaseModel):
     documents: List[DocumentInfo] = Field(default_factory=list)
     facts: List[FactModel] = Field(default_factory=list)
     relationships: List[RelationshipModel] = Field(default_factory=list)
+
 
 
 class QueryRequest(BaseModel):

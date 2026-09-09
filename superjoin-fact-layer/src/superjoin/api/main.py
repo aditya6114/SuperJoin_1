@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 
 from superjoin.api.schemas import HealthResponse
 from superjoin.api.documents import router as documents_router
+from superjoin.api.facts import router as facts_router
+from superjoin.api.relationships import router as relationships_router
 from superjoin.api.query import router as query_router
 
 OPENAPI_DESCRIPTION = """
@@ -19,10 +21,12 @@ A lightweight, production-quality API layer exposing the multi-module Fact Knowl
 
 ### Core Workflow:
 1. `POST /api/v1/documents`: Upload and process PDF documents through Modules 1 → 2 → 4 → 5.
-2. `GET /api/v1/documents/{document_id}/results`: Inspect atomic facts, evidence citations, and relationships for a specific document.
-3. `GET /api/v1/results`: Inspect facts and cross-document relationships across all or selected documents (`?document_ids=doc_a,doc_b`).
-4. `POST /api/v1/query`: Query the structured knowledge layer for grounded facts, conflicts, and corroborations.
-5. `GET /health`: Operational health check.
+2. `GET /api/v1/facts`: Retrieve facts across documents with filtering and pagination.
+3. `GET /api/v1/relationships`: Retrieve relationships between facts with actual embedded facts.
+4. `GET /api/v1/documents/{document_id}/results`: Inspect atomic facts and relationships for a specific document.
+5. `GET /api/v1/results`: Inspect facts and cross-document relationships across all or selected documents.
+6. `POST /api/v1/query`: Query the structured knowledge layer for grounded facts and conflicts.
+7. `GET /health`: Operational health check.
 """
 
 TAGS_METADATA = [
@@ -33,6 +37,14 @@ TAGS_METADATA = [
     {
         "name": "Documents",
         "description": "Document ingestion, results inspection, and cross-document retrieval.",
+    },
+    {
+        "name": "Facts",
+        "description": "Structured fact inspection, filtering, and retrieval.",
+    },
+    {
+        "name": "Relationships",
+        "description": "Cross-document relationships with actual embedded facts and conflict reasoning.",
     },
     {
         "name": "Query",
@@ -121,4 +133,7 @@ async def health_check():
 
 # Mount Routes under /api/v1
 app.include_router(documents_router, prefix="/api/v1")
+app.include_router(facts_router, prefix="/api/v1")
+app.include_router(relationships_router, prefix="/api/v1")
 app.include_router(query_router, prefix="/api/v1")
+

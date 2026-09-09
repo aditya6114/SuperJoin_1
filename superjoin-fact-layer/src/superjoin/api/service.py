@@ -21,7 +21,9 @@ from superjoin.api.schemas import (
     RelationshipModel,
     DocumentResultsResponse,
     CorpusResultsResponse,
-    QueryResponse
+    QueryResponse,
+    FactsListResponse,
+    RelationshipsListResponse
 )
 
 STOP_WORDS = {
@@ -170,15 +172,71 @@ class KnowledgeLayerService:
             evidence=ev
         )
 
-    def relationship_to_model(self, rel: RelationshipResult) -> RelationshipModel:
-        """Converts internal RelationshipResult to API RelationshipModel."""
+    def relationship_to_model(
+        self,
+        rel: RelationshipResult,
+        embed_facts: bool = True
+    ) -> RelationshipModel:
+        """Converts internal RelationshipResult to API RelationshipModel with actual embedded facts."""
         rel_type = rel.relationship.value if hasattr(rel.relationship, "value") else str(rel.relationship)
+
+        if not embed_facts:
+            return RelationshipModel(
+                relationship_id=rel.relationship_id,
+                fact_a=rel.fact_a_id,
+                fact_b=rel.fact_b_id,
+                type=rel_type,
+                confidence=round(rel.confidence, 4),
+                reason=rel.reason,
+                explanation=rel.explanation
+            )
+
+        facts_cache = self._ensure_facts_cache()
+
+        # Resolve Fact A
+        f_a = rel.fact_a
+        doc_a = rel.document_a_id
+        if f_a is None and rel.fact_a_id in facts_cache:
+            doc_a, f_a = facts_cache[rel.fact_a_id]
+
+        if f_a is not None:
+            fact_a_model = self.fact_to_model(f_a, doc_a)
+        else:
+            fact_a_model = FactModel(
+                fact_id=rel.fact_a_id,
+                document_id=doc_a,
+                subject="unknown",
+                predicate="unknown",
+                value="unknown",
+                evidence=EvidenceModel()
+            )
+
+        # Resolve Fact B
+        f_b = rel.fact_b
+        doc_b = rel.document_b_id
+        if f_b is None and rel.fact_b_id in facts_cache:
+            doc_b, f_b = facts_cache[rel.fact_b_id]
+
+        if f_b is not None:
+            fact_b_model = self.fact_to_model(f_b, doc_b)
+        else:
+            fact_b_model = FactModel(
+                fact_id=rel.fact_b_id,
+                document_id=doc_b,
+                subject="unknown",
+                predicate="unknown",
+                value="unknown",
+                evidence=EvidenceModel()
+            )
+
         return RelationshipModel(
-            fact_a=rel.fact_a_id,
-            fact_b=rel.fact_b_id,
+            relationship_id=rel.relationship_id,
+            fact_a=fact_a_model,
+            fact_b=fact_b_model,
             type=rel_type,
             confidence=round(rel.confidence, 4),
-            reason=rel.reason
+            reason=rel.reason,
+            explanation=rel.explanation
         )
 
     def process_document(self, pdf_path: Path) -> str:
@@ -344,6 +402,83 @@ class KnowledgeLayerService:
 
         self._facts_cache = cache
         return self._facts_cache
+
+    def get_facts(
+        self,
+        document_id: Optional[str] = None,
+        predicate: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0
+    ) -> FactsListResponse:
+        """Retrieves structured facts across the corpus or for a specific document with optional predicate filter."""
+        facts_cache = self._ensure_facts_cache()
+        results: List[FactModel] = []
+
+        for fact_id, (doc_id, fact) in facts_cache.items():
+            if document_id and doc_id != document_id:
+                continue
+            if predicate and fact.predicate.lower() != predicate.lower():
+                continue
+            results.append(self.fact_to_model(fact, doc_id))
+
+        total = len(results)
+        paginated = results[offset:offset + limit]
+        return FactsListResponse(
+            total=total,
+            limit=limit,
+            offset=offset,
+            facts=paginated
+        )
+
+    def get_fact_by_id(self, fact_id: str) -> Optional[FactModel]:
+        """Retrieves an individual fact by its UUID."""
+        facts_cache = self._ensure_facts_cache()
+        if fact_id not in facts_cache:
+            return None
+        doc_id, fact = facts_cache[fact_id]
+        return self.fact_to_model(fact, doc_id)
+
+    def get_relationships(
+        self,
+        relationship_type: Optional[str] = None,
+        document_ids: Optional[List[str]] = None,
+        limit: int = 100,
+        offset: int = 0
+    ) -> RelationshipsListResponse:
+        """Retrieves relationships with actual embedded facts, optional type filter, and document filters."""
+        all_rels = self.load_all_relationships()
+        filtered: List[RelationshipResult] = []
+
+        target_type = relationship_type.upper() if relationship_type else None
+        target_docs = set(document_ids) if document_ids else None
+
+        for r in all_rels:
+            r_type = r.relationship.value if hasattr(r.relationship, "value") else str(r.relationship)
+            if target_type and r_type != target_type:
+                continue
+            if target_docs:
+                if r.document_a_id not in target_docs and r.document_b_id not in target_docs:
+                    continue
+            filtered.append(r)
+
+        total = len(filtered)
+        paginated = filtered[offset:offset + limit]
+        models = [self.relationship_to_model(r, embed_facts=True) for r in paginated]
+        return RelationshipsListResponse(
+            total=total,
+            limit=limit,
+            offset=offset,
+            relationships=models
+        )
+
+    def get_relationship_by_id(self, relationship_id: str) -> Optional[RelationshipModel]:
+        """Retrieves an individual relationship by its UUID with actual embedded facts."""
+        all_rels = self.load_all_relationships()
+        for r in all_rels:
+            if r.relationship_id == relationship_id:
+                return self.relationship_to_model(r, embed_facts=True)
+        return None
+
 
     def query_knowledge_layer(
         self,

@@ -137,3 +137,77 @@ def test_get_corpus_results_filtered(client):
         assert doc["document_id"] == doc_a
     for f in data["facts"]:
         assert f["document_id"] == doc_a
+
+
+def test_list_facts_endpoint(client):
+    doc_a = "01-delhivery-prospectus-2022-excerpt-0d7e71"
+    response = client.get(f"/api/v1/facts?document_id={doc_a}&limit=10")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total" in data
+    assert data["total"] > 0
+    assert len(data["facts"]) <= 10
+    first_fact = data["facts"][0]
+    assert "fact_id" in first_fact
+    assert "subject" in first_fact
+    assert "predicate" in first_fact
+    assert "value" in first_fact
+    assert "evidence" in first_fact
+
+
+def test_get_single_fact_endpoint(client):
+    rf = client.get("/api/v1/facts?limit=1")
+    assert rf.status_code == 200
+    fact_id = rf.json()["facts"][0]["fact_id"]
+
+    response = client.get(f"/api/v1/facts/{fact_id}")
+    assert response.status_code == 200
+    fact = response.json()
+    assert fact["fact_id"] == fact_id
+    assert "subject" in fact
+    assert "predicate" in fact
+    assert "value" in fact
+
+
+def test_list_relationships_embedded_facts_endpoint(client):
+    response = client.get("/api/v1/relationships?limit=5")
+    assert response.status_code == 200
+    data = response.json()
+    assert "total" in data
+    assert data["total"] > 0
+    assert len(data["relationships"]) > 0
+
+    first_rel = data["relationships"][0]
+    assert "relationship_id" in first_rel
+    assert "type" in first_rel
+    assert "confidence" in first_rel
+    assert "reason" in first_rel
+
+    # Validate that fact_a and fact_b are ACTUAL FACTS (dicts with subject, predicate, value)
+    assert isinstance(first_rel["fact_a"], dict), "fact_a must be an actual fact object, not just an ID"
+    assert "fact_id" in first_rel["fact_a"]
+    assert "subject" in first_rel["fact_a"]
+    assert "predicate" in first_rel["fact_a"]
+    assert "value" in first_rel["fact_a"]
+
+    assert isinstance(first_rel["fact_b"], dict), "fact_b must be an actual fact object, not just an ID"
+    assert "fact_id" in first_rel["fact_b"]
+    assert "subject" in first_rel["fact_b"]
+    assert "predicate" in first_rel["fact_b"]
+    assert "value" in first_rel["fact_b"]
+
+
+def test_get_single_relationship_endpoint(client):
+    rr = client.get("/api/v1/relationships?limit=1")
+    assert rr.status_code == 200
+    rel_id = rr.json()["relationships"][0]["relationship_id"]
+
+    response = client.get(f"/api/v1/relationships/{rel_id}")
+    assert response.status_code == 200
+    rel = response.json()
+    assert rel["relationship_id"] == rel_id
+    assert isinstance(rel["fact_a"], dict)
+    assert isinstance(rel["fact_b"], dict)
+    assert "subject" in rel["fact_a"]
+    assert "subject" in rel["fact_b"]
+
