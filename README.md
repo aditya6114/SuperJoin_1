@@ -158,31 +158,13 @@ flowchart TD
 
 ## Module Reference
 
-### Architecture & Module Numbering Overview
 
-The project adheres to the 6-module architecture defined in the Superjoin Fact Knowledge Layer specification. The table below maps each module number, its Python package, implementation status, and architectural responsibilities:
-
-| Spec Module | Python Package / Component | Name | Implementation Status | Pipeline Responsibility |
-|:---|:---|:---|:---:|:---|
-| **Module 1** | `superjoin.ingestion` | **Document Ingestion & Parsing** | ✅ Implemented | PDF validation, layout-aware Docling neural parsing, text/table normalization, reading order resolution. |
-| **Module 2** | `superjoin.extraction` | **Fact Extraction** | ✅ Implemented | Signal scoring, rule-based text/table/figure extraction, optional LLM fallback, schema validation, deduplication. |
-| **Module 3** | *Integrated into M2 & M4* | **Entity Resolution** | ⚠️ Integrated | Subject normalization (NFKC/suffix stripping), document-level contextual alias resolution ("The Company" → "delhivery"), pronoun candidate pairing. |
-| **Module 4** | `superjoin.matching` | **Fact Matching** | ✅ Implemented | Inverted indexing (`FactIndex`), 3-pass blocking candidate generation, 8-dimensional deterministic fact comparison. |
-| **Module 5** | `superjoin.reasoning` | **Relationship & Conflict Reasoning** | ✅ Implemented | Deterministic evaluation cascade for Corroboration, Contradiction, and 6 Contextual Reconciliation types. |
-| **Module 6** | `superjoin.api` | **API & Query Layer** | ✅ Implemented | FastAPI REST application, full pipeline execution (`POST /documents`), evidence provenance retrieval, 5-dimension query engine. |
-
-> [!NOTE]
-> **Why is Module 3 Integrated rather than a Separate Service?**
-> In the assignment specification, Module 3 covers cross-document Entity Resolution. In this repository, rather than introducing an external microservice or heavy dependency (e.g. spaCy NER / external knowledge graph), entity resolution was intentionally embedded into **Module 2** (extraction-time signal typing) and **Module 4** (`FactIndex.normalize_key()` and `FactIndex.resolve_subject()`). This guarantees zero serialization overhead and prevents pipeline failure on pronoun-heavy corporate filings. A complete standalone Module 3 specification is provided in [Module 3 — Entity Resolution](#module-3--entity-resolution-status--design).
 
 ### Module 1 — Document Ingestion & Parsing
 
 **Package**: `superjoin.ingestion`
 
 Converts raw PDFs into a layout-aware, normalized canonical representation.
-
-> [!WARNING]
-> **Docling Processing Overhead & Latency**: Parsing multi-page, complex PDFs through Docling involves deep learning layout analysis, table boundary detection, and OCR. While this yields superior structural fidelity compared to naive text splitters, it is computationally heavy (often taking 30–120+ seconds on CPU for documents with dense financial tables). The `DocumentIngestionService` mitigates this by generating a deterministic `document_id` and caching the serialized `CanonicalDocument` JSON on disk, ensuring subsequent pipeline runs bypass Docling parsing entirely.
 
 #### Components
 
@@ -214,9 +196,6 @@ Converts raw PDFs into a layout-aware, normalized canonical representation.
 **Package**: `superjoin.extraction`
 
 Extracts atomic, structured facts from canonical documents using a hybrid architecture: deterministic rule-based extractors run first, with an optional LLM fallback for ambiguous content.
-
-> [!IMPORTANT]
-> **Graphical & Chart Data Comprehension Challenge**: Financial filings frequently communicate growth trajectories, margin distributions, and key performance metrics through bar charts, line plots, and infographics. Currently, `FigureExtractor` extracts facts strictly from text captions associated with figures. It does not perform computer vision chart decomposition (measuring bar heights, reading coordinate axes, or interpreting visual legends). Facts embedded exclusively within graphical charts without explanatory text captions cannot be captured by the rule-based extractor.
 
 #### Pipeline Stages
 
@@ -262,32 +241,7 @@ The rules sub-package provides the deterministic backbone for all extractors:
 
 ---
 
-### Module 3 — Entity Resolution (Status & Design)
-
-**Package**: Integrated across `superjoin.matching` & `superjoin.extraction`
-
-> [!NOTE]
-> **Specification & Numbering Alignment**: In the 6-module architecture specification, **Module 3** designates cross-document Entity Resolution and Disambiguation. In this repository, rather than maintaining a separate isolated microservice or standalone package, entity resolution is architecturally integrated into **Module 2** (extraction-time signal tagging & entity typing) and **Module 4** (matching-time entity normalization & contextual resolution). This section details how entity resolution functions across the system, where its logic lives, and future standalone scope.
-
-#### Entity Resolution Responsibilities
-
-| Entity Challenge | Mechanism | Implementation Location |
-|:---|:---|:---|
-| **Unicode & Case Discrepancies** | NFKC normalization, lowercase folding, whitespace stripping | `FactIndex.normalize_key()` (`superjoin.matching.index`) |
-| **Legal Suffix Variations** | Stripping corporate legal designations (`Limited`, `Ltd`, `Private Limited`, `Pvt Ltd`, `Inc`) | `FactIndex.normalize_key()` (`superjoin.matching.index`) |
-| **Generic & Pronoun Coreference** | Resolving `"The Company"`, `"the group"`, `"the firm"` to the document's primary subject | `FactIndex.resolve_subject()` (`superjoin.matching.index`) |
-| **Uncertain Subject Candidate Pairing** | Pass 3 blocking pairs pronoun/uncertain subjects (`it`, `they`) with known-entity facts sharing identical predicates | `CandidateGenerator._generate_pass3_candidates()` (`superjoin.matching.candidate_generator`) |
-| **Entity Typing** | Categorizing extracted subjects into `company`, `person`, `location`, `product`, `other` | `FactSubject` model (`superjoin.extraction.models`) |
-
-#### Why It Is Integrated (Not a Standalone Package)
-
-1. **Low Cross-Corpus Ambiguity**: For the primary use case of analyzing financial prospectuses and annual reports from known issuers (e.g. Delhivery Limited), >95% of factual claims refer to the primary filing entity. Introducing a heavy standalone NER/entity-linking microservice between extraction and matching adds latency without significant precision gains.
-2. **Deterministic Provenance**: Performing normalization within `FactIndex` ensures that the raw `subject.name` remains completely untampered in the fact JSON, preserving original evidence fidelity while enabling flexible alias matching during candidate generation.
-3. **Future Standalone Scope**: A full standalone Module 3 would incorporate cross-document graph entity resolution, Wikidata/LEI knowledge graph linking, and neural coreference resolution for multi-subsidiary enterprise conglomerates.
-
----
-
-### Module 4 — Fact Matching
+### Module 3 — Fact Matching
 
 **Package**: `superjoin.matching`
 
@@ -344,7 +298,7 @@ Same context:
 
 ---
 
-### Module 5 — Relationship & Conflict Reasoning
+### Module 4 — Relationship & Conflict Reasoning
 
 **Package**: `superjoin.reasoning`
 
@@ -381,7 +335,7 @@ The `RelationshipReasoningService.reason_match()` method evaluates each match th
 
 ---
 
-### Module 6 — API & Query Layer
+### Module 5 — API & Query Layer
 
 **Package**: `superjoin.api`
 
@@ -532,7 +486,6 @@ The LLM layer is **optional** and **never the primary extraction path**. It serv
 |-----------|-------------|
 | `LLMClient` (ABC) | Abstract interface: `extract_structured(prompt, context, schema) → T` |
 | `OpenAILLMClient` | Production client supporting **Google Gemini** (via REST API with JSON mode) and **OpenAI** (via SDK). Auto-detects provider from API key prefix (`AIza` → Gemini, otherwise OpenAI). Default model: `gemini-3.6-flash`. Temperature: `0.0`. |
-| `MockLLMClient` | Deterministic mock for offline testing. Supports canned responses matched by substring in prompt/context. Tracks call history. |
 | `prompts.py` | 3 mode-specific system prompts (`TEXT_EXTRACTION_PROMPT`, `TABLE_EXTRACTION_PROMPT`, `FIGURE_EXTRACTION_PROMPT`) sharing 7 core extraction invariants: evidence grounding, no external knowledge, no inferred dates, no inferred subjects, split compound claims, preserve qualifiers, no cross-document reasoning. |
 | `extractor.py` | `extract_with_llm()` — dispatches by mode, enforces fallback evidence IDs if the LLM omits them. |
 
@@ -606,18 +559,6 @@ Base URL: `http://localhost:8000`
 | `GET` | `/api/v1/relationships/{relationship_id}` | Get single relationship with embedded facts |
 | `POST` | `/api/v1/query` | Evidence-grounded natural language query |
 
-### Error Envelope
-
-All errors follow a consistent envelope:
-
-```json
-{
-  "error": {
-    "code": "DOCUMENT_NOT_FOUND",
-    "message": "Document 'doc_123' was not found."
-  }
-}
-```
 
 ### Interactive Docs
 
@@ -627,57 +568,6 @@ When running locally, visit:
 
 ---
 
-## CLI Reference
-
-All CLI scripts are in the `scripts/` directory and delegate to module-level `cli.py` entry points.
-
-### Parse Documents (Module 1)
-
-```bash
-python scripts/parse_documents.py --input data/input --output data/parsed
-```
-
-### Extract Facts (Module 2)
-
-```bash
-# Deterministic only
-python scripts/extract_facts.py --input data/parsed --output data/facts --no-llm
-
-# With LLM fallback
-python scripts/extract_facts.py --input data/parsed --output data/facts --model gemini-1.5-flash
-
-# With detailed inspection
-python scripts/extract_facts.py --input data/parsed --output data/facts --no-llm --inspect
-```
-
-### Match Facts (Module 4)
-
-```bash
-# Cross-document matching (default)
-python scripts/match_facts.py --input data/facts --output data/matches
-
-# Including intra-document pairs
-python scripts/match_facts.py --input data/facts --output data/matches --allow-intra-doc --inspect
-```
-
-### Reason Relationships (Module 5)
-
-```bash
-# Deterministic reasoning (default)
-python scripts/reason_facts.py --matches data/matches/matches_session.json --facts data/facts --output data/relationships/relationships_session.json
-
-# With optional LLM for unresolved cases
-python scripts/reason_facts.py --matches data/matches/matches_session.json --use-llm --inspect
-```
-
-### Run API Server
-
-```bash
-python scripts/run_api.py
-# Starts uvicorn on http://127.0.0.1:8000 with hot-reload
-```
-
----
 
 ## Project Structure
 
@@ -846,25 +736,6 @@ For LLM-enabled extraction or reasoning:
 # .env file
 GEMINI_API_KEY=AIza...        # Google Gemini API key
 OPENAI_API_KEY=sk-...         # OpenAI API key
-```
-
-### Full Pipeline Run
-
-```bash
-# 1. Parse PDFs
-python scripts/parse_documents.py --input data/input --output data/parsed
-
-# 2. Extract facts (deterministic)
-python scripts/extract_facts.py --input data/parsed --output data/facts --no-llm
-
-# 3. Match facts across documents
-python scripts/match_facts.py --input data/facts --output data/matches --inspect
-
-# 4. Reason about relationships
-python scripts/reason_facts.py --matches data/matches/matches_session.json --facts data/facts --inspect
-
-# 5. Start API server
-python scripts/run_api.py
 ```
 
 ---
