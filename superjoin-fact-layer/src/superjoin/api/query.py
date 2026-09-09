@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
-from superjoin.api.dependencies import get_app_service
-from superjoin.api.schemas import QueryRequest, QueryResponse, FactItemResponse, RelationshipItemResponse
-from superjoin.application import KnowledgeLayerApplication
+from superjoin.api.service import KnowledgeLayerService, get_knowledge_service
+from superjoin.api.schemas import QueryRequest, QueryResponse
 
 router = APIRouter(prefix="/query", tags=["Query"])
 
@@ -11,29 +10,18 @@ router = APIRouter(prefix="/query", tags=["Query"])
     "",
     response_model=QueryResponse,
     status_code=status.HTTP_200_OK,
-    summary="Natural language query / fact-checking across knowledge layer",
+    summary="Query Fact Knowledge Layer",
     description=(
-        "Executes a deterministic, evidence-grounded search across extracted facts and relationships. "
-        "Answers factual inquiries, detects corroborations, exposes contradictions and discrepancies, "
-        "and handles ambiguous or unresolved cases honestly without hallucination."
+        "Executes evidence-grounded search across the structured knowledge layer. "
+        "Answers queries using extracted facts, surfaces corroborations and contradictions, "
+        "and links directly to source evidence."
     )
 )
 async def query_knowledge_layer(
     request: QueryRequest,
-    app_service: KnowledgeLayerApplication = Depends(get_app_service)
+    service: KnowledgeLayerService = Depends(get_knowledge_service)
 ):
-    result = app_service.query_knowledge_layer(
+    return service.query_knowledge_layer(
         query=request.query,
         document_ids=request.document_ids
-    )
-
-    facts = [FactItemResponse(**f) for f in result.get("facts", [])]
-    relationships = [RelationshipItemResponse(**r) for r in result.get("relationships", [])]
-
-    return QueryResponse(
-        query=result["query"],
-        status=result["status"],
-        answer=result["answer"],
-        facts=facts,
-        relationships=relationships
     )

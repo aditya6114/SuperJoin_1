@@ -234,12 +234,18 @@ Module 6 adds a production-quality, additive FastAPI API layer that exposes the 
 
 ### 1. Launching the API Server
 
-Start the local server with hot reloading:
+Start the local server with hot reloading using the virtual environment or the runner script:
 
-```bash
+```powershell
+# Option A: Directly via the virtual environment's uvicorn
+.\.venv\Scripts\uvicorn superjoin.api.main:app --reload --port 8000
+
+# Option B: Via the runner script (automatically sets PYTHONPATH)
+.\.venv\Scripts\python scripts/run_api.py
+
+# Option C: After activating the virtual environment
+.venv\Scripts\Activate.ps1
 uvicorn superjoin.api.main:app --reload --port 8000
-# Or via virtual environment
-.venv\Scripts\uvicorn.exe superjoin.api.main:app --reload --port 8000
 ```
 
 Once running, interactive documentation is available at:
@@ -251,17 +257,15 @@ Once running, interactive documentation is available at:
 
 ### 2. API Endpoints
 
+The API is intentionally streamlined to 5 core endpoints to avoid CRUD bloat while providing full visibility into ingestion, facts, relationships, and queries:
+
 | Method | Path | Tag | Description |
 |---|---|---|---|
-| `GET` | `/health` & `/api/v1/health` | System | Service operational health status |
-| `POST` | `/api/v1/documents` | Documents | Upload PDF and execute ingestion → extraction → matching → reasoning |
-| `GET` | `/api/v1/documents` | Documents | Paginated list of available documents and fact counts |
-| `GET` | `/api/v1/documents/{document_id}` | Documents | Retrieve lightweight document metadata and statistics |
-| `GET` | `/api/v1/documents/{document_id}/facts` | Facts | Paginated list of facts for a document with resolved provenance |
-| `GET` | `/api/v1/facts/{fact_id}` | Facts | Retrieve individual fact with source page citations and text |
-| `GET` | `/api/v1/relationships` | Relationships | Filter relationships by type, document, confidence, and independence |
-| `GET` | `/api/v1/relationships/{relationship_id}` | Relationships | Retrieve individual relationship with comparisons and evidence |
-| `POST` | `/api/v1/query` | Query | Evidence-grounded natural language query & fact-checking |
+| `GET` | `/health` | System | Service operational health status (`{"status": "ok"}`) |
+| `POST` | `/api/v1/documents` | Documents | Upload PDF and execute full pipeline (Ingestion → Extraction → Matching → Reasoning) |
+| `GET` | `/api/v1/documents/{document_id}/results` | Results | Inspect structured facts, source citations (`page`, `text`), and relationships for a document |
+| `GET` | `/api/v1/results` | Results | Inspect facts and cross-document relationships across the corpus (supports `?document_ids=...`) |
+| `POST` | `/api/v1/query` | Query | Grounded query engine with automatic conflict detection (`status="contradiction_found" \| "answered" \| "no_results"`) |
 
 ---
 
@@ -271,17 +275,15 @@ Once running, interactive documentation is available at:
 Upload PDF
    ↓ (POST /api/v1/documents)
 document_id
-   ↓ (GET /api/v1/documents/{id})
-Inspect document metadata
-   ↓ (GET /api/v1/documents/{id}/facts)
-Inspect facts & evidence citations
-   ↓ (GET /api/v1/relationships?relationship_type=CONTRADICTS)
-Inspect conflicts & reconciliations
+   ↓ (GET /api/v1/documents/{document_id}/results)
+Inspect structured facts, citations & document relationships
+   ↓ (GET /api/v1/results?document_ids=doc_a,doc_b)
+Inspect cross-document relationships and conflict reasoning
    ↓ (POST /api/v1/query)
-Evidence-backed answer with grounded facts
+Evidence-backed answers with citation provenance & conflict alerts
 ```
 
-#### Step 1: Upload a PDF Document
+#### Step 1: Upload a PDF Document & Run Pipeline
 ```bash
 curl -X POST "http://localhost:8000/api/v1/documents" \
   -F "file=@data/input/01-delhivery-prospectus-2022-excerpt.pdf"
@@ -290,54 +292,68 @@ curl -X POST "http://localhost:8000/api/v1/documents" \
 ```json
 {
   "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
-  "filename": "01-delhivery-prospectus-2022-excerpt.pdf",
   "status": "processed",
+  "message": "Document processed successfully",
   "page_count": 100,
   "fact_count": 822,
-  "relationship_count": 45
+  "relationship_count": 343
 }
 ```
 
-#### Step 2: Retrieve Document Metadata
+#### Step 2: Inspect Single Document Facts & Evidence
 ```bash
-curl "http://localhost:8000/api/v1/documents/01-delhivery-prospectus-2022-excerpt-0d7e71"
+curl "http://localhost:8000/api/v1/documents/01-delhivery-prospectus-2022-excerpt-0d7e71/results"
 ```
-
-#### Step 3: Inspect Extracted Facts & Provenance Evidence
-```bash
-curl "http://localhost:8000/api/v1/documents/01-delhivery-prospectus-2022-excerpt-0d7e71/facts?fact_type=numerical&page_size=5"
-```
-Every fact resolves source evidence to its page number and source excerpt text:
+Every fact includes human-readable formatted values and provenance citations (`page`, `text`):
 ```json
 {
-  "fact_id": "64086946-dfd0-4978-8d51-d85e7a580ed6",
-  "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
-  "fact_type": "numerical",
-  "subject": {"name": "Company", "type": "company"},
-  "predicate": "equity_share_capital",
-  "object": {"value_type": "number", "value": 216.68, "unit": null, "currency": null, "scale": null},
-  "time": {"time_type": "specific_date", "value": "December 31, 2021"},
-  "confidence": 0.95,
-  "evidence": [
+  "document": {
+    "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+    "filename": "01-delhivery-prospectus-2022-excerpt.pdf",
+    "status": "processed",
+    "page_count": 100,
+    "fact_count": 822
+  },
+  "facts": [
     {
-      "evidence_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p4:b2015",
-      "page": 4,
-      "text": "Equity share capital as of December 31, 2021 was 216.68 million."
+      "fact_id": "64086946-dfd0-4978-8d51-d85e7a580ed6",
+      "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "subject": "Company",
+      "predicate": "equity_share_capital",
+      "value": "216.68",
+      "time_period": "December 31, 2021",
+      "confidence": 0.95,
+      "evidence": {
+        "page": 4,
+        "text": "Equity share capital as of December 31, 2021 was 216.68 million."
+      }
     }
-  ]
+  ],
+  "relationships": [ ... ]
 }
 ```
 
-#### Step 4: Filter Cross-Document Relationships
+#### Step 3: Inspect Cross-Document Relationships
 ```bash
-# Surface all contradictions across documents
-curl "http://localhost:8000/api/v1/relationships?relationship_type=CONTRADICTS"
+# View all cross-document relationships across the corpus
+curl "http://localhost:8000/api/v1/results"
 
-# Surface corroborating claims
-curl "http://localhost:8000/api/v1/relationships?relationship_type=CORROBORATES"
+# Or filter by specific documents
+curl "http://localhost:8000/api/v1/results?document_ids=01-delhivery-prospectus-2022-excerpt-0d7e71,03-delhivery-q4-fy24-earnings-presentation-5ca307"
 ```
 
-#### Step 5: Ask Grounded Natural Language Queries
+Relationship output format:
+```json
+{
+  "fact_a": "revenue_for_services_a: 1860 (Q4 FY23)",
+  "fact_b": "revenue_for_services_b: 1940 (Q4 FY23)",
+  "type": "CONTRADICTS",
+  "confidence": 0.95,
+  "reason": "Material numerical difference (1860 vs 1940) for same entity Company and period Q4 FY23"
+}
+```
+
+#### Step 4: Ask Grounded Natural Language Queries
 ```bash
 curl -X POST "http://localhost:8000/api/v1/query" \
   -H "Content-Type: application/json" \
@@ -348,24 +364,34 @@ curl -X POST "http://localhost:8000/api/v1/query" \
 {
   "query": "equity share capital for Company in December 2021",
   "status": "answered",
-  "answer": "Company equity share capital is reported as 216.68 for December 31, 2021.",
+  "answer": "Company equity_share_capital is 216.68 for December 31, 2021.",
   "facts": [ ... ],
   "relationships": [ ... ]
 }
 ```
 
-Conflict Inquiry:
+When conflicting figures are identified, the status is automatically flagged:
 ```bash
 curl -X POST "http://localhost:8000/api/v1/query" \
   -H "Content-Type: application/json" \
   -d '{"query": "Are there conflicting figures or discrepancies?"}'
+```
+**Response:**
+```json
+{
+  "query": "Are there conflicting figures or discrepancies?",
+  "status": "contradiction_found",
+  "answer": "Discrepancy detected: revenue_for_services_a: 1860 (Q4 FY23) CONTRADICTS revenue_for_services_b: 1940 (Q4 FY23).",
+  "facts": [ ... ],
+  "relationships": [ ... ]
+}
 ```
 
 ---
 
 ### 4. Relationship Semantics
 
-The API directly documents the relationship classification model in OpenAPI schema definitions:
+The API surfaces the Module 5 relationship classification model:
 
 - `CORROBORATES`: Independent or repeated evidence confirms the same claim with equivalent or compatible values.
 - `CONTRADICTS`: Same claim context (entity, predicate, and period) but materially conflicting values.

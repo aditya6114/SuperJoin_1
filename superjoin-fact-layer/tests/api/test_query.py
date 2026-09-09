@@ -15,27 +15,25 @@ def test_query_known_fact(client):
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] in ("answered", "ambiguous")
+    assert data["status"] in ("answered", "contradiction_found")
     assert len(data["facts"]) > 0
     assert "equity_share_capital" in [f["predicate"] for f in data["facts"]]
-    # Evidence must be grounded
+
     first_fact = data["facts"][0]
-    assert len(first_fact["evidence"]) > 0
+    assert "evidence" in first_fact
+    assert "page" in first_fact["evidence"]
 
 
 def test_query_conflict_detection(client):
-    # Query for conflicts across the corpus
     response = client.post(
         "/api/v1/query",
         json={"query": "Are there conflicting figures or discrepancies?"}
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["status"] in ("answered", "ambiguous")
-    assert "answer" in data
-    # Check if contradiction relationships are properly reported
-    if data["relationships"]:
-        assert any(r["relationship_type"] == "CONTRADICTS" for r in data["relationships"])
+    assert data["status"] == "contradiction_found"
+    assert len(data["relationships"]) > 0
+    assert any(r["type"] == "CONTRADICTS" for r in data["relationships"])
 
 
 def test_query_no_results(client):
@@ -46,24 +44,20 @@ def test_query_no_results(client):
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "no_results"
-    assert data["answer"] == "No matching evidence was found."
     assert data["facts"] == []
     assert data["relationships"] == []
 
 
 def test_query_document_scope_filter(client):
-    list_resp = client.get("/api/v1/documents")
-    docs = list_resp.json()["items"]
-    if len(docs) >= 1:
-        target_doc = docs[0]["document_id"]
-        response = client.post(
-            "/api/v1/query",
-            json={
-                "query": "reported financial figures",
-                "document_ids": [target_doc]
-            }
-        )
-        assert response.status_code == 200
-        data = response.json()
-        for f in data["facts"]:
-            assert f["document_id"] == target_doc
+    target_doc = "01-delhivery-prospectus-2022-excerpt-0d7e71"
+    response = client.post(
+        "/api/v1/query",
+        json={
+            "query": "equity share capital",
+            "document_ids": [target_doc]
+        }
+    )
+    assert response.status_code == 200
+    data = response.json()
+    for f in data["facts"]:
+        assert f["document_id"] == target_doc

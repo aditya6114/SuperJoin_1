@@ -2,54 +2,41 @@ from fastapi import FastAPI, Request, status, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from superjoin.api.schemas import HealthResponse, ErrorResponse
+from superjoin.api.schemas import HealthResponse
 from superjoin.api.documents import router as documents_router
-from superjoin.api.facts import router as facts_router
-from superjoin.api.relationships import router as relationships_router
 from superjoin.api.query import router as query_router
 
 OPENAPI_DESCRIPTION = """
 ## Superjoin Fact Knowledge Layer API
 
-A production-quality REST API exposing the multi-module Fact Knowledge Layer:
-- **Module 1 — Ingestion & Canonicalization**: Parse PDFs into geometry-normalized, provenance-preserving canonical documents.
-- **Module 2 — Hybrid Fact Extraction**: Extract atomic, validated claims grounded in source evidence.
-- **Module 4 — Fact Matching**: Cross-document fact indexing and deterministic claim comparison.
-- **Module 5 — Relationship & Conflict Reasoning**: Evaluates semantic relations and conflicts between claims.
+A lightweight, production-quality API layer exposing the multi-module Fact Knowledge Layer:
+- **Module 1 — Document Ingestion & Parsing**
+- **Module 2 — Fact Extraction**
+- **Module 4 — Fact Matching**
+- **Module 5 — Relationship & Conflict Reasoning**
 
 ---
 
-### Relationship Semantics
-
-The relationship layer classifies pairs of facts into five precise categories:
-
-- `CORROBORATES`: Independent or repeated evidence supports the same factual claim with equivalent or compatible values.
-- `CONTRADICTS`: Same claim context (entity, metric, and period) but materially incompatible or conflicting values.
-- `CONTEXTUALLY_RECONCILED`: Apparent differences explained by distinct time periods, operational scopes, accounting dimensions, or status definitions.
-- `UNRESOLVED`: Insufficient contextual evidence or ambiguous entity attribution to safely determine relationship.
-- `UNRELATED`: Claims describe distinct entities, non-comparable metrics, or incompatible fact types.
+### Core Workflow:
+1. `POST /api/v1/documents`: Upload and process PDF documents through Modules 1 → 2 → 4 → 5.
+2. `GET /api/v1/documents/{document_id}/results`: Inspect atomic facts, evidence citations, and relationships for a specific document.
+3. `GET /api/v1/results`: Inspect facts and cross-document relationships across all or selected documents (`?document_ids=doc_a,doc_b`).
+4. `POST /api/v1/query`: Query the structured knowledge layer for grounded facts, conflicts, and corroborations.
+5. `GET /health`: Operational health check.
 """
 
 TAGS_METADATA = [
     {
         "name": "System",
-        "description": "Service health check and operational status endpoints.",
+        "description": "Health check endpoints.",
     },
     {
         "name": "Documents",
-        "description": "PDF document upload, ingestion orchestration, and canonical metadata retrieval.",
-    },
-    {
-        "name": "Facts",
-        "description": "Atomic fact retrieval with detailed source evidence provenance (page numbers, element citations, text).",
-    },
-    {
-        "name": "Relationships",
-        "description": "Cross-document fact relationships, corroboration, contradictions, and reconciliations.",
+        "description": "Document ingestion, results inspection, and cross-document retrieval.",
     },
     {
         "name": "Query",
-        "description": "Evidence-grounded natural language search and conflict resolution engine.",
+        "description": "Evidence-grounded query and conflict detection.",
     },
 ]
 
@@ -64,7 +51,7 @@ app = FastAPI(
 )
 
 
-# Exception Handlers ensuring consistent ErrorResponse envelope
+# Standardized Error Envelope Handlers
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
     if isinstance(exc.detail, dict) and "code" in exc.detail and "message" in exc.detail:
@@ -73,13 +60,11 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         code_map = {
             status.HTTP_400_BAD_REQUEST: "BAD_REQUEST",
             status.HTTP_404_NOT_FOUND: "NOT_FOUND",
-            status.HTTP_413_REQUEST_ENTITY_TOO_LARGE: "PAYLOAD_TOO_LARGE",
             status.HTTP_422_UNPROCESSABLE_ENTITY: "UNPROCESSABLE_ENTITY",
             status.HTTP_500_INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
         }
-        code = code_map.get(exc.status_code, "HTTP_ERROR")
         error_payload = {
-            "code": code,
+            "code": code_map.get(exc.status_code, "HTTP_ERROR"),
             "message": str(exc.detail)
         }
 
@@ -96,7 +81,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content={
             "error": {
                 "code": "VALIDATION_ERROR",
-                "message": "Invalid request parameters or payload.",
+                "message": "Invalid request parameters.",
                 "details": exc.errors()
             }
         }
@@ -116,27 +101,24 @@ async def general_exception_handler(request: Request, exc: Exception):
     )
 
 
-# System Health Endpoints
+# Health Endpoints
 @app.get(
     "/health",
     response_model=HealthResponse,
     tags=["System"],
     summary="Health check",
-    description="Returns the operational health status of the Superjoin Fact Layer API."
+    description="Returns simple operational status."
 )
 @app.get(
     "/api/v1/health",
     response_model=HealthResponse,
     tags=["System"],
-    summary="Health check (API v1)",
-    description="Returns the operational health status of the Superjoin Fact Layer API."
+    summary="Health check (API v1)"
 )
 async def health_check():
-    return HealthResponse(status="ok", service="superjoin-fact-layer")
+    return HealthResponse(status="ok")
 
 
-# Mount API v1 Routers
+# Mount Routes under /api/v1
 app.include_router(documents_router, prefix="/api/v1")
-app.include_router(facts_router, prefix="/api/v1")
-app.include_router(relationships_router, prefix="/api/v1")
 app.include_router(query_router, prefix="/api/v1")
