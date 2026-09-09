@@ -228,12 +228,160 @@ python scripts/extract_facts.py --input data/parsed --output data/facts --model 
 
 ---
 
-## Running Tests
+## Module 6: FastAPI REST API & OpenAPI Layer
 
-Execute the comprehensive test suite (66 tests covering ingestion, extraction, extractors, rules, edge cases, deduplication, and service orchestration):
+Module 6 adds a production-quality, additive FastAPI API layer that exposes the Fact Knowledge Layer over HTTP with automatic OpenAPI/Swagger documentation.
+
+### 1. Launching the API Server
+
+Start the local server with hot reloading:
 
 ```bash
-pytest -v
+uvicorn superjoin.api.main:app --reload --port 8000
 # Or via virtual environment
-.venv\Scripts\pytest -v
+.venv\Scripts\uvicorn.exe superjoin.api.main:app --reload --port 8000
 ```
+
+Once running, interactive documentation is available at:
+- **Swagger UI**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **ReDoc**: [http://localhost:8000/redoc](http://localhost:8000/redoc)
+- **OpenAPI JSON**: [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+---
+
+### 2. API Endpoints
+
+| Method | Path | Tag | Description |
+|---|---|---|---|
+| `GET` | `/health` & `/api/v1/health` | System | Service operational health status |
+| `POST` | `/api/v1/documents` | Documents | Upload PDF and execute ingestion → extraction → matching → reasoning |
+| `GET` | `/api/v1/documents` | Documents | Paginated list of available documents and fact counts |
+| `GET` | `/api/v1/documents/{document_id}` | Documents | Retrieve lightweight document metadata and statistics |
+| `GET` | `/api/v1/documents/{document_id}/facts` | Facts | Paginated list of facts for a document with resolved provenance |
+| `GET` | `/api/v1/facts/{fact_id}` | Facts | Retrieve individual fact with source page citations and text |
+| `GET` | `/api/v1/relationships` | Relationships | Filter relationships by type, document, confidence, and independence |
+| `GET` | `/api/v1/relationships/{relationship_id}` | Relationships | Retrieve individual relationship with comparisons and evidence |
+| `POST` | `/api/v1/query` | Query | Evidence-grounded natural language query & fact-checking |
+
+---
+
+### 3. Evaluator Workflow Walkthrough
+
+```text
+Upload PDF
+   ↓ (POST /api/v1/documents)
+document_id
+   ↓ (GET /api/v1/documents/{id})
+Inspect document metadata
+   ↓ (GET /api/v1/documents/{id}/facts)
+Inspect facts & evidence citations
+   ↓ (GET /api/v1/relationships?relationship_type=CONTRADICTS)
+Inspect conflicts & reconciliations
+   ↓ (POST /api/v1/query)
+Evidence-backed answer with grounded facts
+```
+
+#### Step 1: Upload a PDF Document
+```bash
+curl -X POST "http://localhost:8000/api/v1/documents" \
+  -F "file=@data/input/01-delhivery-prospectus-2022-excerpt.pdf"
+```
+**Response:**
+```json
+{
+  "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+  "filename": "01-delhivery-prospectus-2022-excerpt.pdf",
+  "status": "processed",
+  "page_count": 100,
+  "fact_count": 822,
+  "relationship_count": 45
+}
+```
+
+#### Step 2: Retrieve Document Metadata
+```bash
+curl "http://localhost:8000/api/v1/documents/01-delhivery-prospectus-2022-excerpt-0d7e71"
+```
+
+#### Step 3: Inspect Extracted Facts & Provenance Evidence
+```bash
+curl "http://localhost:8000/api/v1/documents/01-delhivery-prospectus-2022-excerpt-0d7e71/facts?fact_type=numerical&page_size=5"
+```
+Every fact resolves source evidence to its page number and source excerpt text:
+```json
+{
+  "fact_id": "64086946-dfd0-4978-8d51-d85e7a580ed6",
+  "document_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+  "fact_type": "numerical",
+  "subject": {"name": "Company", "type": "company"},
+  "predicate": "equity_share_capital",
+  "object": {"value_type": "number", "value": 216.68, "unit": null, "currency": null, "scale": null},
+  "time": {"time_type": "specific_date", "value": "December 31, 2021"},
+  "confidence": 0.95,
+  "evidence": [
+    {
+      "evidence_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p4:b2015",
+      "page": 4,
+      "text": "Equity share capital as of December 31, 2021 was 216.68 million."
+    }
+  ]
+}
+```
+
+#### Step 4: Filter Cross-Document Relationships
+```bash
+# Surface all contradictions across documents
+curl "http://localhost:8000/api/v1/relationships?relationship_type=CONTRADICTS"
+
+# Surface corroborating claims
+curl "http://localhost:8000/api/v1/relationships?relationship_type=CORROBORATES"
+```
+
+#### Step 5: Ask Grounded Natural Language Queries
+```bash
+curl -X POST "http://localhost:8000/api/v1/query" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "equity share capital for Company in December 2021"}'
+```
+**Response:**
+```json
+{
+  "query": "equity share capital for Company in December 2021",
+  "status": "answered",
+  "answer": "Company equity share capital is reported as 216.68 for December 31, 2021.",
+  "facts": [ ... ],
+  "relationships": [ ... ]
+}
+```
+
+Conflict Inquiry:
+```bash
+curl -X POST "http://localhost:8000/api/v1/query" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Are there conflicting figures or discrepancies?"}'
+```
+
+---
+
+### 4. Relationship Semantics
+
+The API directly documents the relationship classification model in OpenAPI schema definitions:
+
+- `CORROBORATES`: Independent or repeated evidence confirms the same claim with equivalent or compatible values.
+- `CONTRADICTS`: Same claim context (entity, predicate, and period) but materially conflicting values.
+- `CONTEXTUALLY_RECONCILED`: Apparent differences explained by time, operational scope, accounting dimension, or status transitions.
+- `UNRESOLVED`: Insufficient contextual evidence to safely establish conflict or agreement without hallucinating certainty.
+- `UNRELATED`: Different entities, predicates, or non-comparable claims.
+
+---
+
+## Running Tests
+
+Execute the full regression and API test suite (186 tests passing):
+
+```bash
+pytest -q
+# Or via virtual environment
+.\.venv\Scripts\pytest.exe -q
+```
+

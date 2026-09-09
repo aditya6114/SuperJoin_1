@@ -1,0 +1,76 @@
+{
+  "corpus": {
+    "documents": 3,
+    "facts": 1234,
+    "candidate_pairs": 5587
+  },
+  "relationship_distribution": {
+    "CONTEXTUALLY_RECONCILED": 4193,
+    "CONTRADICTS": 1212,
+    "CORROBORATES": 3,
+    "UNRESOLVED": 179,
+    "UNRELATED": 0
+  },
+  "sample_sizes": {
+    "cross_document_contradictions": 10,
+    "same_document_contradictions": 10,
+    "corroborations": 3,
+    "reconciled_sample": 20,
+    "unresolved_sample": 20
+  },
+  "manual_audit": {
+    "genuine_contradictions": 2,
+    "contextually_different": 15,
+    "metric_dimension_mismatch": 0,
+    "extraction_errors": 18,
+    "matching_errors": 0,
+    "reasoning_errors": 0,
+    "uncertain": 0
+  },
+  "precision_estimates": {
+    "contradiction_precision": 10.0,
+    "corroboration_precision": 100.0,
+    "reconciliation_precision": 100.0,
+    "unresolved_precision": 100.0
+  },
+  "same_document_contradiction_taxonomy": {
+    "OTHER_TABLE_ROW_PREDICATE_COLLAPSE": 252,
+    "COLLAPSED_FOOTNOTE_NUMBER_PREDICATE": 303,
+    "COLLAPSED_HEADER_FRAGMENT_PREDICATE": 481,
+    "ROMAN_NUMERAL_SUBHEADER_PREDICATE": 58,
+    "UNEXTRACTED_SCOPE_OR_PERIOD_IN_TABLE": 48,
+    "AMBIGUOUS_GENERIC_PREDICATE": 56,
+    "GENUINE_TEST_DISAGREEMENT": 4
+  },
+  "systematic_patterns": [
+    {
+      "pattern": "Table Footnote / Numeric Column Predicates",
+      "count": 303,
+      "layer": "Module 2 (Table Extractor)",
+      "description": "Footnote reference numbers '(1)' or '(2)' extracted as the metric predicate instead of row labels."
+    },
+    {
+      "pattern": "Table Header Fragment Predicates",
+      "count": 481,
+      "layer": "Module 2 (Table Extractor)",
+      "description": "Column header fragments ('% of revenue', 'FY24', 'As of end of...') extracted as predicate, collapsing distinct row metrics."
+    },
+    {
+      "pattern": "Unextracted Accounting Scope / Basis in Multi-Column Financial Statements",
+      "count": 58,
+      "layer": "Module 2 (Table Extractor)",
+      "description": "Table super-headers indicating 'Proforma', 'Restated Consolidated', or 'Acquisition Adjustments' omitted from scope/qualifiers."
+    }
+  ],
+  "root_causes": [
+    "Module 2 Table Extractor erroneously maps column header fragments and footnote indices as the predicate for all row cells in transposed/complex tables.",
+    "Module 2 Table Extractor omits reporting scope/qualifiers from table super-headers (e.g. Proforma vs Restated Consolidated vs Adjustments).",
+    "Module 4 Candidate Generator matches facts whenever predicates match, pairing completely distinct metrics that shared synthetic predicates ('1', 'of_revenue').",
+    "Module 5 accurately evaluated the structured facts presented to it according to exact same-claim identity rules, but inherited corrupted predicates and missing scopes from upstream extraction."
+  ],
+  "recommended_fixes": [
+    "Fix Module 2 Table Extractor: Filter out pure digit/footnote column names ('1', '2') and generic header fragments ('of_revenue', 'fy24') from being assigned as predicates. Always use row header labels as predicates.",
+    "Fix Module 2 Table Extractor: Parse table title / super-headers to assign scope ('proforma', 'restated_consolidated', 'adjustments').",
+    "Fix Module 4 Candidate Generator / Matcher: Block candidate pairing when predicates are numeric digits or known generic header fragments."
+  ]
+}

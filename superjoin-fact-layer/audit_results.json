@@ -1,0 +1,2196 @@
+{
+  "total_audited": 63,
+  "rows": [
+    {
+      "audit_id": "CONTRA-CROSS-01",
+      "relationship_id": "30b8756c-5c66-48f6-8cb4-107cab0c7925",
+      "fact_a_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "fact_b_id": "e0baedcd-b062-4cb4-a55a-74b3316007ed",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 242  (Q4 FY23, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-02",
+      "relationship_id": "36e9a941-4424-433f-a444-77830a685263",
+      "fact_a_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "fact_b_id": "591fb264-62f4-4e01-84fc-94541900a649",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 183  (Q3 FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-03",
+      "relationship_id": "ab46dff6-4179-48e3-9e60-9c880c699bff",
+      "fact_a_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "fact_b_id": "fd13ee69-b586-433d-9a90-d4b3f34b4473",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 200  (Q4 FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-04",
+      "relationship_id": "96fca0d7-a5ef-4c61-8236-57091284261a",
+      "fact_a_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "fact_b_id": "d073ce5d-c208-4f55-969a-422ea116cb27",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 831  (FY23, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-05",
+      "relationship_id": "2cdfd225-407a-4ecc-a1eb-8e0ff700b52d",
+      "fact_a_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "fact_b_id": "4e373e4c-8cb2-4681-a1f7-b8d2fa89f16e",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 722  (FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-06",
+      "relationship_id": "cbea27d0-989b-4264-a798-02231c18650c",
+      "fact_a_id": "c29fb84a-0854-47e1-a166-c2695c2217a3",
+      "fact_b_id": "e0baedcd-b062-4cb4-a55a-74b3316007ed",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 240.01  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 242  (Q4 FY23, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 27,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p27:e2048",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (16 rows) Sample rows: [['Income:', '', '', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '7,575.11', '(3,973.94)', '(9.92)', '-', '(3,983.86)', '51,696.55'], ['Other income', '1,008.76', '11.55', '(10.05)', '-', '-', '(10.05)', '1,010.26']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-07",
+      "relationship_id": "7eacea12-5a1a-428b-b428-ff716267395f",
+      "fact_a_id": "c29fb84a-0854-47e1-a166-c2695c2217a3",
+      "fact_b_id": "591fb264-62f4-4e01-84fc-94541900a649",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 240.01  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 183  (Q3 FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 27,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p27:e2048",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (16 rows) Sample rows: [['Income:', '', '', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '7,575.11', '(3,973.94)', '(9.92)', '-', '(3,983.86)', '51,696.55'], ['Other income', '1,008.76', '11.55', '(10.05)', '-', '-', '(10.05)', '1,010.26']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-08",
+      "relationship_id": "c26403c4-0838-4265-b68b-69a2cfbef691",
+      "fact_a_id": "c29fb84a-0854-47e1-a166-c2695c2217a3",
+      "fact_b_id": "fd13ee69-b586-433d-9a90-d4b3f34b4473",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 240.01  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 200  (Q4 FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 27,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p27:e2048",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (16 rows) Sample rows: [['Income:', '', '', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '7,575.11', '(3,973.94)', '(9.92)', '-', '(3,983.86)', '51,696.55'], ['Other income', '1,008.76', '11.55', '(10.05)', '-', '-', '(10.05)', '1,010.26']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-09",
+      "relationship_id": "9e0164c7-36c9-4064-9b75-fab346d75509",
+      "fact_a_id": "c29fb84a-0854-47e1-a166-c2695c2217a3",
+      "fact_b_id": "d073ce5d-c208-4f55-969a-422ea116cb27",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 240.01  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 831  (FY23, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 27,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p27:e2048",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (16 rows) Sample rows: [['Income:', '', '', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '7,575.11', '(3,973.94)', '(9.92)', '-', '(3,983.86)', '51,696.55'], ['Other income', '1,008.76', '11.55', '(10.05)', '-', '-', '(10.05)', '1,010.26']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-CROSS-10",
+      "relationship_id": "daa68530-ecca-48af-9f37-71f35b6461d7",
+      "fact_a_id": "c29fb84a-0854-47e1-a166-c2695c2217a3",
+      "fact_b_id": "4e373e4c-8cb2-4681-a1f7-b8d2fa89f16e",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 240.01  (unknown, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 722  (FY24, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Temporal & Scope divergence: Fact A from Doc 1 represents FY21 / 9M FY22 acquisition adjustments where period and scope were lost as 'unknown' in table extraction. Fact B from Doc 3 represents FY23/FY24 quarterly/annual depreciation. They describe different periods and scopes.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 27,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p27:e2048",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (16 rows) Sample rows: [['Income:', '', '', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '7,575.11', '(3,973.94)', '(9.92)', '-', '(3,983.86)', '51,696.55'], ['Other income', '1,008.76', '11.55', '(10.05)', '-', '-', '(10.05)', '1,010.26']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-01",
+      "relationship_id": "92490d3c-791c-49bd-8d60-6d353cd78738",
+      "fact_a_id": "4f238eab-6b68-407a-9e54-34536d8eea5a",
+      "fact_b_id": "fee29b4b-7189-4a4c-9a7c-2f6264844d73",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.893,
+      "fact_a_summary": "Company -> 1 = 43.31  (March 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> 1 = 5.79  (March 31, 2021, default-scope)",
+      "classification": "EXTRACTION_ERROR",
+      "error_stage": "Fact Extraction (Module 2 Table Extractor)",
+      "reason": "Column/footnote number '1' in table was incorrectly treated as metric predicate. Completely different row metrics (e.g. Table [Headers: ['S. No.', 'Name of the  vs Table [Headers: ['S. No.', 'Name of the ) were falsely paired.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 7,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p7:e2020",
+          "type": "table",
+          "text": "Table [Headers: ['S. No.', 'Name of the Related party', 'Nature of transactio ns', 'Nine months period ended December 31, 2021']...] (30 rows) Sample rows: [['1', 'Remuneration to key management personnel', 'Salary and other employee benefits', '', '', '', '', ''], ['1', 'Sahil Barua', '', '', '', '', '', ''], ['1', '', '', '', '', '43.31', '', '']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 7,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p7:e2020",
+          "type": "table",
+          "text": "Table [Headers: ['S. No.', 'Name of the Related party', 'Nature of transactio ns', 'Nine months period ended December 31, 2021']...] (30 rows) Sample rows: [['1', 'Remuneration to key management personnel', 'Salary and other employee benefits', '', '', '', '', ''], ['1', 'Sahil Barua', '', '', '', '', '', ''], ['1', '', '', '', '', '43.31', '', '']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-02",
+      "relationship_id": "46133988-6cdd-49b9-b48b-c5829113afe8",
+      "fact_a_id": "497d304c-3289-46e6-afc6-2f9b02676eac",
+      "fact_b_id": "c60ebd00-7e11-48b7-aaf1-883522d3a8dd",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.893,
+      "fact_a_summary": "Company -> 2 = 381.21  (December 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> 2 = 3.02  (December 31, 2021, default-scope)",
+      "classification": "EXTRACTION_ERROR",
+      "error_stage": "Fact Extraction (Module 2 Table Extractor)",
+      "reason": "Column/footnote number '2' in table was incorrectly treated as metric predicate. Completely different row metrics (e.g. Table [Headers: ['S. No.', 'Name of the  vs Table [Headers: ['S. No.', 'Name of the ) were falsely paired.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 7,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p7:e2020",
+          "type": "table",
+          "text": "Table [Headers: ['S. No.', 'Name of the Related party', 'Nature of transactio ns', 'Nine months period ended December 31, 2021']...] (30 rows) Sample rows: [['1', 'Remuneration to key management personnel', 'Salary and other employee benefits', '', '', '', '', ''], ['1', 'Sahil Barua', '', '', '', '', '', ''], ['1', '', '', '', '', '43.31', '', '']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 7,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p7:e2020",
+          "type": "table",
+          "text": "Table [Headers: ['S. No.', 'Name of the Related party', 'Nature of transactio ns', 'Nine months period ended December 31, 2021']...] (30 rows) Sample rows: [['1', 'Remuneration to key management personnel', 'Salary and other employee benefits', '', '', '', '', ''], ['1', 'Sahil Barua', '', '', '', '', '', ''], ['1', '', '', '', '', '43.31', '', '']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-03",
+      "relationship_id": "07ea36fe-8c5a-4113-b21d-3540827fdf51",
+      "fact_a_id": "50754eb7-8834-4b83-853d-1800d6924853",
+      "fact_b_id": "21c7169f-04d9-422c-ba5a-8e3175628666",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.893,
+      "fact_a_summary": "Company -> of_revenue = 34.5 % (Q4 FY22, default-scope)",
+      "fact_b_summary": "Company -> of_revenue = 20.2 % (Q4 FY22, default-scope)",
+      "classification": "EXTRACTION_ERROR",
+      "error_stage": "Fact Extraction (Module 2 Table Extractor)",
+      "reason": "Header fragment 'of_revenue' was extracted as metric predicate across multiple rows of a financial table. Different expense/revenue line items were falsely collapsed into identical claim candidates.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "same",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 24,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p24:e652",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY22', 'Q4 FY23', 'Q3 FY24']...] (20 rows) Sample rows: [['Freight, Handling and Servicing Cost (1,2)', '1,502', '1,372', '1,572', '1,519'], ['% of Revenue from services (2)', '72.5%', '73.8%', '71.6%', '73.2%'], ['Line haul expenses', '724', '616', '696', '708']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 24,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p24:e652",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY22', 'Q4 FY23', 'Q3 FY24']...] (20 rows) Sample rows: [['Freight, Handling and Servicing Cost (1,2)', '1,502', '1,372', '1,572', '1,519'], ['% of Revenue from services (2)', '72.5%', '73.8%', '71.6%', '73.2%'], ['Line haul expenses', '724', '616', '696', '708']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-04",
+      "relationship_id": "4816b104-607c-4a35-9fc3-262108c51f37",
+      "fact_a_id": "06240027-adc6-40ba-a140-fa5a9eabab5a",
+      "fact_b_id": "aedfd72c-471d-498b-b29a-d5cca73c8277",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> as_of_end_of_for_the_period_q4_fy23 = 18540  (unknown, default-scope)",
+      "fact_b_summary": "Company -> as_of_end_of_for_the_period_q4_fy23 = 27253  (unknown, default-scope)",
+      "classification": "EXTRACTION_ERROR",
+      "error_stage": "Fact Extraction (Module 2 Table Extractor)",
+      "reason": "Header fragment 'as_of_end_of_for_the_period_q4_fy23' was extracted as metric predicate across multiple rows of a financial table. Different expense/revenue line items were falsely collapsed into identical claim candidates.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 8,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p8:e643",
+          "type": "table",
+          "text": "Table [Headers: ['As of end of / for the period.', 'As of end of / for the period.Q4 FY22', 'As of end of / for the period.Q4 FY23', 'As of end of / for the period.Q3 FY24']...] (13 rows) Sample rows: [['Pin-code reach (1)', '18,074', '18,540', '18,675', '18,793'], ['Countries and territories served (2)', '220+', '220+', '220+', '220+'], ['No. of Active Customers (3)', '23,613', '27,253', '30,598', '33,278']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 8,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p8:e643",
+          "type": "table",
+          "text": "Table [Headers: ['As of end of / for the period.', 'As of end of / for the period.Q4 FY22', 'As of end of / for the period.Q4 FY23', 'As of end of / for the period.Q3 FY24']...] (13 rows) Sample rows: [['Pin-code reach (1)', '18,074', '18,540', '18,675', '18,793'], ['Countries and territories served (2)', '220+', '220+', '220+', '220+'], ['No. of Active Customers (3)', '23,613', '27,253', '30,598', '33,278']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-05",
+      "relationship_id": "4675403a-db45-4923-9f06-0ea11379bf73",
+      "fact_a_id": "0012a577-8895-4364-956b-a64be74e296f",
+      "fact_b_id": "f0c2a58d-033c-41ac-8421-767ba8439ae6",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> fy24 = 5971  (unknown, default-scope)",
+      "fact_b_summary": "Company -> fy24 = 2684  (unknown, default-scope)",
+      "classification": "EXTRACTION_ERROR",
+      "error_stage": "Fact Extraction (Module 2 Table Extractor)",
+      "reason": "Header fragment 'fy24' was extracted as metric predicate across multiple rows of a financial table. Different expense/revenue line items were falsely collapsed into identical claim candidates.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 24,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p24:e653",
+          "type": "table",
+          "text": "Table [Headers: ['FY23', 'FY24']...] (20 rows) Sample rows: [['5,669', '5,971'], ['78.5%', '73.3%'], ['2,517', '2,684']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 24,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p24:e653",
+          "type": "table",
+          "text": "Table [Headers: ['FY23', 'FY24']...] (20 rows) Sample rows: [['5,669', '5,971'], ['78.5%', '73.3%'], ['2,517', '2,684']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-06",
+      "relationship_id": "71638951-f327-4aab-9e98-b91dd3fb3b6a",
+      "fact_a_id": "8c101bc6-4a2a-45cc-98b9-188910a10af1",
+      "fact_b_id": "ce626275-a5a7-4b63-bf7e-b3c8cef17289",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.846,
+      "fact_a_summary": "which we -> acquired = 202  (December 31, 2020, default-scope)",
+      "fact_b_summary": "which we -> acquired = 1  (December 31, 2020, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Facts describe different acquisitions or different entities acquired, but entity name was omitted from predicate.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 46,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p46:e621",
+          "type": "text",
+          "text": "In addition, Spoton, which we acquired in August 2021 had PTL volume of 758,730 tonnes, 508,026 tonnes and 683,999 tonnes for Fiscal 2021 and the nine months period ended December 31, 2020 and the nin"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 46,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p46:e621",
+          "type": "text",
+          "text": "In addition, Spoton, which we acquired in August 2021 had PTL volume of 758,730 tonnes, 508,026 tonnes and 683,999 tonnes for Fiscal 2021 and the nine months period ended December 31, 2020 and the nin"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-07",
+      "relationship_id": "736851e9-a4ad-4920-bb13-9d1644580451",
+      "fact_a_id": "7ed92e9e-c646-42fb-ad64-71d07ed2cb93",
+      "fact_b_id": "a1b8feab-f7c8-4c01-b310-a652a7d678a4",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> depreciation_and_amortisation_expense = 3881.75  (December 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> depreciation_and_amortisation_expense = 1320.19  (unknown, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Restated Consolidated vs Proforma Consolidated vs Adjustments columns in the same table were extracted without scope distinction.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 17,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p17:e2038",
+          "type": "table",
+          "text": "Table [Headers: ['Particulars', 'For the nine months period ended December 31, 2021', 'For the nine months period ended December 31, 2020', 'For the year ended March 31, 2021']...] (23 rows) Sample rows: [['Income', '', '', '', '', ''], ['Revenue from contract with customers', '48,105.30', '26,438.66', '36,465.27', '27,805.75', '16,538.97'], ['Other income', '1,008.76', '1,626.63', '1,917.64', '2,080.54', '409.77']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 22,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p22:e2043",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolidated Summary Statement of Profit and Loss of Delhivery Limited for the year ended March 31, 2021.(A)', 'Spoton Logistics Private Limited Special Purpose Consolidated Statement of Profit and Loss for the year ended March 31, 2021.(B)', 'Intragroup elimination.(D)']...] (16 rows) Sample rows: [['Income', '', '', '', '', '', ''], ['Revenue from contract with customers', '36,465.27', '8,035.88', '(1.84)', '-', '-', '44,501.15'], ['Other income', '1,917.64', '26.89', '-', '-', '-', '1,944.53']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-08",
+      "relationship_id": "aaff7868-327f-48fe-88de-ad09b741d215",
+      "fact_a_id": "2f93c29e-b165-4927-953f-bbe5e7bc4836",
+      "fact_b_id": "b02f0182-a3f5-4e65-9cf3-80fd782e592c",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> employee_benefit_expense_excl_share_based_payments = 0.8 % (unknown, default-scope)",
+      "fact_b_summary": "Company -> employee_benefit_expense_excl_share_based_payments = 8.4 % (unknown, default-scope)",
+      "classification": "CONTEXTUALLY_DIFFERENT",
+      "error_stage": "Fact Extraction (Module 2)",
+      "reason": "Different quarterly percentages in the same presentation table (QoQ% vs YoY%) where quarterly labels were omitted.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "same",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+          "page": 17,
+          "element_id": "03-delhivery-q4-fy24-earnings-presentation-5ca307:p17:e646",
+          "type": "table",
+          "text": "Table [Headers: ['\u20b9 Cr', 'Q4 FY23', 'Q3 FY24', 'Q4 FY24']...] (22 rows) Sample rows: [['Income', '', '', '', '', '', '', '', ''], ['Revenue for services (A)', '1,860', '2,194', '2,076', '(5.4%)', '11.6%', '7,224', '8,142', '12.7%'], ['Revenue from traded goods (B)', '0', '-', '-', '-', '-', '2', '-', '-']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-09",
+      "relationship_id": "8becf3ac-8183-496b-bd18-a944daede03e",
+      "fact_a_id": "5ef2e6c6-54b0-4bea-9358-ed7b5f017a53",
+      "fact_b_id": "1ac5cf4d-07ed-4dd7-ba27-7cde3b23e0df",
+      "document_a": "doc-disagree",
+      "document_b": "doc-disagree",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> revenue = 100 \u20b9 (unknown, default-scope)",
+      "fact_b_summary": "Company -> revenue = 120 \u20b9 (unknown, default-scope)",
+      "classification": "GENUINE_CONTRADICTION",
+      "error_stage": "None (Correct Reasoning)",
+      "reason": "Synthetic fixture designed specifically to test internal document conflict.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "doc-disagree",
+          "page": null,
+          "type": "synthetic/unknown",
+          "text": "Evidence IDs: ['e1']"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "doc-disagree",
+          "page": null,
+          "type": "synthetic/unknown",
+          "text": "Evidence IDs: ['e2']"
+        }
+      ]
+    },
+    {
+      "audit_id": "CONTRA-SAME-10",
+      "relationship_id": "399d6b32-ebb5-42e3-ac0d-130b08b73517",
+      "fact_a_id": "cc182556-736f-4adc-80b8-0bcbad027383",
+      "fact_b_id": "5d8c45ee-7f4d-4ac2-b6b6-d49089a2243e",
+      "document_a": "doc-pages",
+      "document_b": "doc-pages",
+      "source_independence": "same_document",
+      "relationship": "CONTRADICTS",
+      "confidence": 0.8648,
+      "fact_a_summary": "Company -> revenue = 50 \u20b9 (2022, default-scope)",
+      "fact_b_summary": "Company -> revenue = 202  (2022, default-scope)",
+      "classification": "GENUINE_CONTRADICTION",
+      "error_stage": "None (Correct Reasoning)",
+      "reason": "Synthetic fixture designed specifically to test internal document conflict.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "converted",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "doc-pages",
+          "page": null,
+          "type": "synthetic/unknown",
+          "text": "Evidence IDs: ['el-1']"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "doc-pages",
+          "page": null,
+          "type": "synthetic/unknown",
+          "text": "Evidence IDs: ['el-1']"
+        }
+      ]
+    },
+    {
+      "audit_id": "CORR-01",
+      "relationship_id": "04dfcc90-f3a1-4959-9d2e-eb544208d01d",
+      "fact_a_id": "9b0abff1-ccd6-4acc-a9a7-27a2cd071ade",
+      "fact_b_id": "f4584e4f-1c16-45fa-9d11-6a9170970a50",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CORROBORATES",
+      "confidence": 0.931,
+      "fact_a_summary": "Company -> ii_income_tax_relating_to_items_that_will_not_be_reclassified_to_profit_and_loss = 1.38  (August 24, 2021, default-scope)",
+      "fact_b_summary": "Company -> ii_income_tax_relating_to_items_that_will_not_be_reclassified_to_profit_and_loss = 1.38  (unknown, default-scope)",
+      "classification": "GENUINE_CORROBORATION",
+      "error_stage": "None (Valid Corroboration)",
+      "reason": "Identical financial statement item reported with matching value and matching context.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "equal",
+        "unit": "same",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 28,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p28:e2049",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (11 rows) Sample rows: [['Exceptional items (IV)', '-', '(17.98)', '-', '-', '-', '-', '(17.98)'], ['Loss before tax (V= III+IV)', '(8,987.45)', '(190.39)', '(91.06)', '-', '(570.19)', '(661.25)', '(9,839.09)'], ['Tax expense, comprising:', '', '', '', '', '', '', '']]"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 28,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p28:e2049",
+          "type": "table",
+          "text": "Table [Headers: ['', 'Restated Consolida ted Summary Statement of Profit and Loss of Delhivery Limited for nine months period ended December.31, 2021 (A)', 'Spoton Logistics Private Limited Special purpose interim consolidated statement of Profit and Loss for the nine months period ended December 31, 2021.(B)', 'Adjustment for Spoton Logistics Private Limited Interim Consolidated Profit and Loss for period August 24, 2021 to December 31, 2021.(C)']...] (11 rows) Sample rows: [['Exceptional items (IV)', '-', '(17.98)', '-', '-', '-', '-', '(17.98)'], ['Loss before tax (V= III+IV)', '(8,987.45)', '(190.39)', '(91.06)', '-', '(570.19)', '(661.25)', '(9,839.09)'], ['Tax expense, comprising:', '', '', '', '', '', '', '']]"
+        }
+      ]
+    },
+    {
+      "audit_id": "CORR-02",
+      "relationship_id": "44cbd15d-4815-4e3f-82fc-c08b777ec1db",
+      "fact_a_id": "afed7076-01a8-4433-893f-fa346cafd174",
+      "fact_b_id": "13cc90ca-9fbf-4e7d-9841-26128093b80a",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CORROBORATES",
+      "confidence": 0.81,
+      "fact_a_summary": "we -> acquired = 202  (December 31, 2021, default-scope)",
+      "fact_b_summary": "We -> acquired = 202  (as of December 31, 2021, default-scope)",
+      "classification": "GENUINE_CORROBORATION",
+      "error_stage": "None (Valid Corroboration)",
+      "reason": "Genuine repeated statement across pages 48 and 55 confirming acquisitions as of Dec 31, 2021.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "compatible",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "compatible",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 55,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p55:e947",
+          "type": "text",
+          "text": "In Fiscal 2021, we fulfilled over 289.20 million express parcel orders, carried 373,854 tonnes of PTL freight, processed 47.37 million orders through our fulfilment centers and completed more than 46,"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 48,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p48:e674",
+          "type": "text",
+          "text": "We acquired Spoton in August 2021 to further scale our PTL freight services business. Spoton delivered 758,730 tonnes and 683,999 tonnes of freight in Fiscal 2021 and the nine months period ended Dece"
+        }
+      ]
+    },
+    {
+      "audit_id": "CORR-03",
+      "relationship_id": "56979663-ca82-4712-990f-b565eb505cda",
+      "fact_a_id": "906b3f87-6d51-4946-b581-14dc55d0f08e",
+      "fact_b_id": "4971ff49-475e-4283-944e-17c636a00aaa",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CORROBORATES",
+      "confidence": 0.81,
+      "fact_a_summary": "we -> acquired = 1  (December 31, 2021, default-scope)",
+      "fact_b_summary": "We -> acquired = 1  (as of December 31, 2021, default-scope)",
+      "classification": "GENUINE_CORROBORATION",
+      "error_stage": "None (Valid Corroboration)",
+      "reason": "Genuine repeated statement across pages 48 and 55 confirming acquisitions as of Dec 31, 2021.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "compatible",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "compatible",
+        "status": null
+      },
+      "evidence_a": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 55,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p55:e947",
+          "type": "text",
+          "text": "In Fiscal 2021, we fulfilled over 289.20 million express parcel orders, carried 373,854 tonnes of PTL freight, processed 47.37 million orders through our fulfilment centers and completed more than 46,"
+        }
+      ],
+      "evidence_b": [
+        {
+          "doc_id": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+          "page": 48,
+          "element_id": "01-delhivery-prospectus-2022-excerpt-0d7e71:p48:e674",
+          "type": "text",
+          "text": "We acquired Spoton in August 2021 to further scale our PTL freight services business. Spoton delivered 758,730 tonnes and 683,999 tonnes of freight in Fiscal 2021 and the nine months period ended Dece"
+        }
+      ]
+    },
+    {
+      "audit_id": "RECON-01",
+      "relationship_id": "bbf0673a-7db4-455c-b375-33b8169481e2",
+      "fact_a_id": "6ec454f1-5b35-4f92-a6a7-e6f4d9e9424e",
+      "fact_b_id": "f54b8fe5-1f58-47d9-8ce1-e9c0592b9847",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> employee_benefit_expense_excl_share_based_payments = 284  (Q4 FY23, default-scope)",
+      "fact_b_summary": "Company -> employee_benefit_expense_excl_share_based_payments = 306  (Q3 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-02",
+      "relationship_id": "e918dba6-50af-4c8c-b671-63ba66ececde",
+      "fact_a_id": "ac0bcd11-4085-4a8d-81a8-4cec36548e60",
+      "fact_b_id": "b208767d-7232-49a1-8e7f-c3a2bd99e5e4",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.779,
+      "fact_a_summary": "Company -> fy24 = 17  (unknown, default-scope)",
+      "fact_b_summary": "Company -> fy24 = 1.2 % (unknown, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The figures represent different metric dimensions (absolute figure vs percentage rate).",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-03",
+      "relationship_id": "f41db8af-85c1-4c91-8c1d-0ea1afc8eb15",
+      "fact_a_id": "36684c36-a417-4aa1-9985-464a08766b23",
+      "fact_b_id": "73ec1d3d-0f1f-4cb0-ae14-422a05d6485f",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> revenue_from_contract_with_customers = 44501.15  (for the year ended March 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> revenue_from_contract_with_customers = 48105.3  (2021, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-04",
+      "relationship_id": "35bcfea2-e986-4b46-b928-6cd53f706529",
+      "fact_a_id": "c5ce2c28-c05e-4ccc-aed5-aeb482f9878f",
+      "fact_b_id": "a3f3fff8-a339-43e6-b502-388682e186b7",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> other_current_assets = 1144.46  (December 31, 2020, default-scope)",
+      "fact_b_summary": "Company -> other_current_assets = 1386.38  (March 31, 2021, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-05",
+      "relationship_id": "2283ba5a-e1c1-4237-bd06-fddb018c76ee",
+      "fact_a_id": "7cf555e4-0338-478f-85e0-d3dbda153bbd",
+      "fact_b_id": "a9cc053a-2575-4d81-9163-29c224dd024e",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> total_income = 29886.29  (March 31, 2020, default-scope)",
+      "fact_b_summary": "Company -> total_income = 2325  (Q3 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-06",
+      "relationship_id": "bcfd1109-a3ed-42df-9eba-74e50a4ba16b",
+      "fact_a_id": "5dd900be-face-4211-88dd-98b991ef865c",
+      "fact_b_id": "baad095d-9ff5-4eb6-967c-b3d247ee8e5b",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> less_corporate_overheads = 200  (Q4 FY23, default-scope)",
+      "fact_b_summary": "Company -> less_corporate_overheads = 214  (Q3 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-07",
+      "relationship_id": "5ee94cc7-8004-40f0-9565-2430772a83b7",
+      "fact_a_id": "d1ae618b-1213-4620-9015-880f727f896d",
+      "fact_b_id": "4574574a-3f00-49b6-bad1-80861fc0bba7",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.8075,
+      "fact_a_summary": "Company -> service_ebitda = 238  (Q4 FY24, default-scope)",
+      "fact_b_summary": "Company -> service_ebitda = 941  (FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The figures reflect differing reporting durations or overlapping temporal periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "contained",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-08",
+      "relationship_id": "9eb28462-380f-4b9e-b3ec-dc0967e47e94",
+      "fact_a_id": "82c30643-ea2d-4b87-86d5-6ab830e84546",
+      "fact_b_id": "d09b7a5e-7710-4c4f-90e8-7498046fedf1",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> total_income_i = 49114.06  (2021, default-scope)",
+      "fact_b_summary": "Company -> total_income_i = 52706.81  (December 31, 2021, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-09",
+      "relationship_id": "f23cf86e-64e5-49da-a2a5-138f3b5a4ee6",
+      "fact_a_id": "f5b0706a-1974-42cd-8d95-cf8cae48a362",
+      "fact_b_id": "8703a287-b64f-43c9-8d95-8364d7deaa74",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> revenue_from_express_parcel_services = 19288.56  (Fiscal 2020, default-scope)",
+      "fact_b_summary": "Company -> revenue_from_express_parcel_services = 71.22 % (December 31, 2020, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-10",
+      "relationship_id": "62ed5e83-e02d-4b61-8e52-8131ab9c64ba",
+      "fact_a_id": "8db9dc4a-c05b-4ce0-8b0e-597c57399c9d",
+      "fact_b_id": "56d54718-9041-417e-9224-d3b205beed48",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> other_income = 1917.64  (for the year ended March 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> other_income = 2080.54  (for the year ended March 31, 2020, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-11",
+      "relationship_id": "9cf2b233-67cd-4d1e-a47f-bdfcf410930f",
+      "fact_a_id": "124613e8-3461-46ac-8168-eb1133bd34d4",
+      "fact_b_id": "f58f7846-0dfa-44fc-8bc1-b743f38ad93c",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> of_revenue = 33.1 % (Q4 FY23, default-scope)",
+      "fact_b_summary": "Company -> of_revenue = 1.0 % (Q4 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "same",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-12",
+      "relationship_id": "abeaed51-fd6d-4ef8-a41b-38891b6bf50b",
+      "fact_a_id": "4dfad9d6-d68c-4284-bdfc-56d4bc453221",
+      "fact_b_id": "67145724-1dce-4997-a316-38f1ee926cff",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> of_revenue = 12.2 % (Q4 FY24, default-scope)",
+      "fact_b_summary": "Company -> of_revenue = 1.0 % (Q3 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "same",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-13",
+      "relationship_id": "8b816775-a579-45cf-a309-8fa825f0d968",
+      "fact_a_id": "913f8e80-ac18-45ce-82a7-56b1e24c0579",
+      "fact_b_id": "500c5dff-1740-4ebd-ab45-6cff30cc63eb",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> of_revenue = 1.2 % (Q3 FY24, default-scope)",
+      "fact_b_summary": "Company -> of_revenue = 0.9 % (Q4 FY24, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "same",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-14",
+      "relationship_id": "f9c921bc-84f5-43bf-928f-08e63496557a",
+      "fact_a_id": "3a16b7cb-27c1-4970-8c0f-8148f6c1410b",
+      "fact_b_id": "425afa74-6028-468c-b21a-8c7a212e10b2",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> finance_costs = 762.29  (December 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> finance_costs = 639.39  (December 31, 2020, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-15",
+      "relationship_id": "bab17dd2-e8ad-436a-992f-e31db6dc59ba",
+      "fact_a_id": "0d672fb4-f915-42f9-a40c-cec8ecee2820",
+      "fact_b_id": "48bfa002-5627-4dae-bf9d-4584b9a9024d",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> ii_lease_liabilities = 1107.66  (March 31, 2020, default-scope)",
+      "fact_b_summary": "Company -> ii_lease_liabilities = 1929.98  (March 31, 2021, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-16",
+      "relationship_id": "e7dce6e0-e4a3-406a-8698-0735b2f02455",
+      "fact_a_id": "10fe47a0-fdcc-41ee-b68c-085daf223fb9",
+      "fact_b_id": "f637eb84-1b89-468c-ade3-6c980ee98599",
+      "document_a": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> employee_benefit_expense_share_based_payments = 54  (Q3 FY24, default-scope)",
+      "fact_b_summary": "Company -> employee_benefit_expense_share_based_payments = 289  (FY23, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-17",
+      "relationship_id": "83987695-c2ab-4ec8-af00-e6d5ab6cb5e0",
+      "fact_a_id": "b907b268-4ee0-49fa-9344-1b7c6b38b1f4",
+      "fact_b_id": "1da3df9d-c5fd-4d77-9298-1497ab8b2a13",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> revenue_from_contracts_with_customers = 36465.27  (Fiscal 2021, default-scope)",
+      "fact_b_summary": "Company -> revenue_from_contracts_with_customers = 100.0 % (December 31, 2020, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-18",
+      "relationship_id": "71f65cba-0833-4f68-bf65-1330c7bb07bb",
+      "fact_a_id": "fee29b4b-7189-4a4c-9a7c-2f6264844d73",
+      "fact_b_id": "aa63f2ca-c217-4f47-9b69-ae92b6b92e2d",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> 1 = 5.79  (March 31, 2021, default-scope)",
+      "fact_b_summary": "Company -> 1 = 104.47  (March 31, 2019, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-19",
+      "relationship_id": "bac0a58b-5368-4f0c-a83a-28bca240adec",
+      "fact_a_id": "78ea8e1e-d73b-4d39-a18a-37575f72e290",
+      "fact_b_id": "aa63f2ca-c217-4f47-9b69-ae92b6b92e2d",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> 1 = 66.15  (March 31, 2020, default-scope)",
+      "fact_b_summary": "Company -> 1 = 104.47  (March 31, 2019, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "RECON-20",
+      "relationship_id": "384f4ab8-a4b3-42e5-be5b-22c34d324744",
+      "fact_a_id": "52637113-49c1-4265-87bb-4b2b9fc0d0b7",
+      "fact_b_id": "79e7c068-0e78-4aff-ad82-224d9ff0ee0f",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "CONTEXTUALLY_RECONCILED",
+      "confidence": 0.874,
+      "fact_a_summary": "Company -> 1 = 0.11  (December 31, 2020, default-scope)",
+      "fact_b_summary": "Company -> 1 = 20.79  (December 31, 2021, default-scope)",
+      "classification": "VALID_RECONCILIATION",
+      "error_stage": "None",
+      "reason": "The values differ because the facts describe different reporting periods.",
+      "signals": {
+        "subject": "exact",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-01",
+      "relationship_id": "3a89371a-d99f-4cf0-be6f-a6f1d31b5732",
+      "fact_a_id": "5ef2e6c6-54b0-4bea-9358-ed7b5f017a53",
+      "fact_b_id": "cc182556-736f-4adc-80b8-0bcbad027383",
+      "document_a": "doc-disagree",
+      "document_b": "doc-pages",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "Company -> revenue = 100 \u20b9 (unknown, default-scope)",
+      "fact_b_summary": "Company -> revenue = 50 \u20b9 (2022, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-02",
+      "relationship_id": "08cd8e8f-fbfe-41c1-9c1e-9ec365d4cb8a",
+      "fact_a_id": "c122a47f-3606-4ded-bdb0-2cc8b021e4a6",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 24  (August 24, 2021, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-03",
+      "relationship_id": "25ad975a-7f98-457d-bbe6-3e39153ee673",
+      "fact_a_id": "f8bf9cfe-8d16-4eba-9e41-9b881e071bf3",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 1  (August 24, 2021, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-04",
+      "relationship_id": "39d2c7d1-b272-4036-9e94-f4bc1cae862f",
+      "fact_a_id": "763ed44a-8311-44f9-9499-650a74419fe2",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 9  (December 31, 2020, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-05",
+      "relationship_id": "ce3aa5b1-21d2-4b55-b64a-ecaa5bbb7a25",
+      "fact_a_id": "c6435019-6477-4ee5-b305-7fb7654a059f",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 0  (December 31, 2020, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-06",
+      "relationship_id": "24fb25fc-a223-4deb-a4d0-05e2aaaed458",
+      "fact_a_id": "3fb59f7c-fade-4d6c-970c-9061167a1fb9",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 31  (December 31, 2020, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "compatible",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-07",
+      "relationship_id": "eb006af8-bbc3-4fa9-b6ce-64f939929a3e",
+      "fact_a_id": "9f3adc14-0e7f-4b93-a9b7-7e562084717f",
+      "fact_b_id": "26f568f6-8d4d-491d-af7a-6b27b485ff0c",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = 202  (as of December 31, 2021, default-scope)",
+      "fact_b_summary": "The department also -> provides = 24  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "compatible",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-08",
+      "relationship_id": "eeeabb10-16e3-437f-8dc1-d9e4066e5056",
+      "fact_a_id": "5034963d-dc54-467f-849e-92dc4e27216a",
+      "fact_b_id": "9cb71d75-cc79-41ec-9d16-5ffd567bb7be",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = a snapshot of Spoton's key operational perform ance indicators as of and for the dates indicated  (2021, default-scope)",
+      "fact_b_summary": "our distributed architecture enables us to scale rapidly and -> provides = flexibility with multiple teams working independently on various services for faster deployment  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-09",
+      "relationship_id": "05e567f1-65c6-4c10-8155-6f18f30e2bf1",
+      "fact_a_id": "5034963d-dc54-467f-849e-92dc4e27216a",
+      "fact_b_id": "babbdb68-da11-4392-b795-dc6ad4232774",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-india-economic-survey-2024-25-excerpt-86f2e7",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "The following table -> provides = a snapshot of Spoton's key operational perform ance indicators as of and for the dates indicated  (2021, default-scope)",
+      "fact_b_summary": "significantly reducing transaction costs. The Bharat Mart in Dubai -> provides = Indian MSMEs affordable access to the Gulf Cooperation Council, African, and CIS markets, enhancing exports to these regions  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-10",
+      "relationship_id": "806ecdc3-01a9-4632-88c3-1be22d97be51",
+      "fact_a_id": "6aa54b5b-40cf-460f-8869-228ad3d345f3",
+      "fact_b_id": "1008de3a-31b3-43f1-b3a0-1bab162e9769",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "We -> acquired = Primaseller Inc  (2021, default-scope)",
+      "fact_b_summary": "Our Directors are not interested in any property -> acquired = or proposed to be acquired by our Company  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-11",
+      "relationship_id": "8cfb3720-6b27-48ba-bb2c-e3d21962453f",
+      "fact_a_id": "481afc58-2e03-4372-92c0-6726af325203",
+      "fact_b_id": "25106bf7-1c8c-41e3-bb45-9504b5f109b4",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "03-delhivery-q4-fy24-earnings-presentation-5ca307",
+      "source_independence": "cross_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = Roadpiper Technologies Private Limited, a digital freight broker with fleet owner, load-matching and pricing applications  (2020, default-scope)",
+      "fact_b_summary": "Assets -> acquired = through Spoton acquisition  (unknown, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "unknown",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-12",
+      "relationship_id": "1d0de4ff-f16e-4a6e-87e5-0f91eda27dd3",
+      "fact_a_id": "87d79b58-db0f-4137-a0f9-ac6501c78ae9",
+      "fact_b_id": "8c101bc6-4a2a-45cc-98b9-188910a10af1",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = 683999 tonnes (December 31, 2021, default-scope)",
+      "fact_b_summary": "which we -> acquired = 202  (December 31, 2020, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-13",
+      "relationship_id": "e597544d-0e57-4f2e-a355-51d2e26e1632",
+      "fact_a_id": "afed7076-01a8-4433-893f-fa346cafd174",
+      "fact_b_id": "ce626275-a5a7-4b63-bf7e-b3c8cef17289",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = 202  (December 31, 2021, default-scope)",
+      "fact_b_summary": "which we -> acquired = 1  (December 31, 2020, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-14",
+      "relationship_id": "a2455352-c0ac-494c-b530-62cbe8df0c15",
+      "fact_a_id": "906b3f87-6d51-4946-b581-14dc55d0f08e",
+      "fact_b_id": "2696491f-1a5b-40c3-8599-fd5403632605",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = 1  (December 31, 2021, default-scope)",
+      "fact_b_summary": "which we -> acquired = 758730 tonnes (December 31, 2020, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-15",
+      "relationship_id": "cb6276ae-1a2a-4812-a297-050cc5af3d5a",
+      "fact_a_id": "2a3c8647-c56b-4f9d-a79e-0d7225576a2a",
+      "fact_b_id": "1e128c06-983b-41e6-914f-e4fdbc42a4f1",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = 31  (December 31, 2021, default-scope)",
+      "fact_b_summary": "which we -> acquired = 508026 tonnes (December 31, 2020, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-16",
+      "relationship_id": "b5732633-aea4-4c27-8a03-dcc4dd494e98",
+      "fact_a_id": "ad07c579-e42d-4cdd-a11f-16548fa6461f",
+      "fact_b_id": "3b9a2e21-a088-451f-8cf7-37adb7223549",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "we -> acquired = 34  (December 31, 2021, default-scope)",
+      "fact_b_summary": "which we -> acquired = 683999 tonnes (December 31, 2020, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-17",
+      "relationship_id": "00fa7cd8-8e62-4fac-961d-d2d72d47c4b2",
+      "fact_a_id": "ce626275-a5a7-4b63-bf7e-b3c8cef17289",
+      "fact_b_id": "4971ff49-475e-4283-944e-17c636a00aaa",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "which we -> acquired = 1  (December 31, 2020, default-scope)",
+      "fact_b_summary": "We -> acquired = 1  (as of December 31, 2021, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "compatible",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "compatible",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-18",
+      "relationship_id": "01d09c8d-0c1c-4871-85e5-212e51782f34",
+      "fact_a_id": "1e128c06-983b-41e6-914f-e4fdbc42a4f1",
+      "fact_b_id": "4971ff49-475e-4283-944e-17c636a00aaa",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "which we -> acquired = 508026 tonnes (December 31, 2020, default-scope)",
+      "fact_b_summary": "We -> acquired = 1  (as of December 31, 2021, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "missing",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-19",
+      "relationship_id": "7de435a3-dd6b-4218-93cd-9d1451ac919a",
+      "fact_a_id": "9cfd408d-0b90-46d0-bc90-4fdbea9aac9f",
+      "fact_b_id": "4971ff49-475e-4283-944e-17c636a00aaa",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "which we -> acquired = 31  (December 31, 2020, default-scope)",
+      "fact_b_summary": "We -> acquired = 1  (as of December 31, 2021, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "different",
+        "scope": "same",
+        "qualifiers": "different",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    },
+    {
+      "audit_id": "UNRES-20",
+      "relationship_id": "fc48e94e-c4e2-48fd-b719-c2e179e2c764",
+      "fact_a_id": "f1dcc053-fb39-4d57-a371-7cc582c7b63a",
+      "fact_b_id": "c3225ca8-e804-45ea-9ec7-7c1948a982a8",
+      "document_a": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "document_b": "01-delhivery-prospectus-2022-excerpt-0d7e71",
+      "source_independence": "same_document",
+      "relationship": "UNRESOLVED",
+      "confidence": 0.5,
+      "fact_a_summary": "We -> launched = 202  (2021, default-scope)",
+      "fact_b_summary": "We have also -> launched = 2  (2021, default-scope)",
+      "classification": "VALID_UNRESOLVED",
+      "error_stage": "None",
+      "reason": "The subject is unresolved or generic, preventing safe entity attribution.",
+      "signals": {
+        "subject": "unknown",
+        "predicate": "exact",
+        "fact_type": "compatible",
+        "value": "different",
+        "unit": "not_applicable",
+        "time": "same",
+        "scope": "same",
+        "qualifiers": "exact",
+        "status": null
+      },
+      "evidence_a": [],
+      "evidence_b": []
+    }
+  ]
+}
